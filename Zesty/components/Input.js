@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
-const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => {
+const Input = ({ title, label, value, onChangeText, placeholder, secureTextEntry }) => {
     return (
         <View style={styles.container}>
-        <Text style={styles.label}>{ label }</Text>
+        <Text style={styles.label}>{title}</Text>
         <TextInput
+            label={label}
             autoCorrect={false}
             onChangeText={onChangeText}
             placeholder={placeholder}
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     label: {
         padding: 5,
         paddingBottom: 0,
-        color: '#333',
+        color: '#252D42',
         fontSize:17,
         fontWeight: '700',
         width:'100%',
@@ -36,10 +37,11 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingRight: 5,
         paddingBottom: 5,
-        color:'#333',
+        color:'#252D42',
         fontSize:18,
         fontWeight: '700',
         width:'100%',
+        opacity:100,
     }
 });
 
