@@ -24,16 +24,14 @@ export default class Login extends Component {
 
     _login() {
         firebaseRef.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
-            Actions.itsworks()
+            Actions.calendar()
         }).catch(function(error){
             console.log(error.code)
             console.log(error.message)
         })
-
-          
     }
     _register() {
-    Actions.Register();
+    Actions.register();
     }
     render() {
         return (

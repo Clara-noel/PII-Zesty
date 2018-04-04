@@ -16,12 +16,21 @@ export default class Register extends Component {
             password: '',
             verifyPassword: ''
         }
-
         this._register = this._register.bind(this)
     }
 
     _register() {
-        Actions.register()
+        if(this.state.password == this.state.verifyPassword){
+            firebaseRef.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(() => {
+                Actions.login()
+            }).catch(function(error) {
+                console.log(error.code)
+                console.log(error.message)
+            });
+        }
+        else {
+            console.log("Les mots de passe ne sont pas identiques")
+        }
     }
     render() {
         return (
@@ -30,7 +39,7 @@ export default class Register extends Component {
             <Image source={require('../../ressources/Logo.png')} style={imageStyle.logo}/>
             <Input
             title='EMAIL'
-            placeholder= {email}
+            placeholder= 'Entrez votre adresse e-mail'
             label='Email'
             onChangeText={email => this.setState({email})}
             value={this.state.mail}
@@ -48,14 +57,14 @@ export default class Register extends Component {
             placeholder='Re-tapez votre mot de passe ...'
             label='VerifyPassword'
             secureTextEntry
-            onChangeText={password => this.setState({password})}
+            onChangeText={verifyPassword => this.setState({verifyPassword})}
             value={this.state.verifyPassword}
             />
             <ButtonInscription onPress={this._register}>Inscription</ButtonInscription>
             </View>
             </ImageBackground>
-    );
-}
+        );
+    }
 }
 const styles = StyleSheet.create({
     container: {
