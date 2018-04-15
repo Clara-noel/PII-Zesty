@@ -3,37 +3,52 @@ import { firebaseApp, firebaseRef } from '../../services/Firebase'
 import {StyleSheet, Text, View, Image, ImageBackground, Animated, Keyboard, StatusBar} from 'react-native';
 import _ from 'lodash';
 import { Input } from '../../components/Input';
-import { ButtonConnexion, ButtonInscription, ButtonFacebook } from '../../components/Button';
+import { ButtonConnexion, ButtonInscription, ButtonFacebook, ButtonBack } from '../../components/Button';
 import { Actions } from 'react-native-router-flux';
 import itsworks from './itsworks';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL} from '../authentication/styles';
 import logo from '../../ressources/Logo.png';
 
-export default class Login extends Component {
+export default class SubscribeFinal extends Component {
     constructor(props) {
         super(props)
+        this.prenom = this.props.prenom;
+        this.regime = this.props.regime;
+        this.allergies = this.props.allergies;
         this.state = {
             email: '',
             password: '',
+            verifyPassword: '',
         }
-
-        this._login = this._login.bind(this)
-        this._register = this._register.bind(this)
+        this._subscribeFinal = this._subscribeFinal.bind(this)
 
         this.keyboardHeight = new Animated.Value(0);
         this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
     }
-
-    _login() {
-       firebaseRef.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
-            Actions.calendar()
-        }).catch(function(error){
+    _subscribeFinal() {
+        firebaseRef.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(() => {
+            var monId = firebaseRef.auth().currentUser.uid
+            this._registerDB(this.prenom, this.regime, this.allergies, monId, this.state.email);
+        }).catch(function(error) {
             console.log(error.code)
             console.log(error.message)
-        })
+        });
     }
-    _register() {
-    Actions.subscribe();
+    _registerDB(monprenom, monregime, mesallergies, monId, monemail) {
+        console.log(monId)
+        var usersRef = firebaseRef.database().ref().child("Users/" + monId);
+        usersRef.update({
+        InformationsPersonnelles: {
+            Prenom: monprenom,
+            Regime: monregime,
+            Allergie: mesallergies,
+            Email: monemail,
+        }
+        });
+        Actions.login();
+    }
+    _back() {
+        Actions.pop();
     }
     componentWillMount () {
         this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
@@ -76,10 +91,10 @@ export default class Login extends Component {
             <Animated.Image source={logo} style={[styles.logo, { height: this.imageHeight }]} />
             <Input
             title='EMAIL'
-            placeholder='Tapez votre adresse email ...'
+            placeholder= {'Entrez votre adresse e-mail'}
             label='Email'
             onChangeText={email => this.setState({email})}
-            value={this.state.mail}
+            value={this.state.email}
             />
             <Input
             title='MOT DE PASSE'
@@ -89,12 +104,19 @@ export default class Login extends Component {
             onChangeText={password => this.setState({password})}
             value={this.state.password}
             />
-            <ButtonConnexion onPress={this._login}>Se connecter</ButtonConnexion>
-            <ButtonInscription onPress={this._register}>S'inscrire</ButtonInscription>
-            <ButtonFacebook>Connexion avec Facebook</ButtonFacebook>
+            <Input
+            title='VERIFICATION DU MOT DE PASSE'
+            placeholder='Re-tapez votre mot de passe ...'
+            label='VerifyPassword'
+            secureTextEntry
+            onChangeText={verifyPassword => this.setState({verifyPassword})}
+            value={this.state.verifyPassword}
+            />
+            <ButtonInscription onPress={this._subscribeFinal}>Inscription</ButtonInscription>
+            <ButtonBack onPress={this._back}>Retour</ButtonBack>
             </Animated.View>
             </View>
             </ImageBackground>
-    );
-}
+        );
+    }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
-const Input = ({ title, label, value, onChangeText, placeholder, secureTextEntry }) => {
+const Input = ({ title, label, value, onChangeText, placeholder, secureTextEntry, editable}) => {
     return (
         <View style={styles.container}>
         <Text style={styles.label}>{title}</Text>
@@ -13,6 +13,9 @@ const Input = ({ title, label, value, onChangeText, placeholder, secureTextEntry
             style={styles.input}
             secureTextEntry={secureTextEntry}
             value={value}
+            autoCapitalize= {'none'}
+            maxLength={100}
+            editable={editable}
             />
         </View>
     )
@@ -20,13 +23,13 @@ const Input = ({ title, label, value, onChangeText, placeholder, secureTextEntry
 
 const styles = StyleSheet.create({
     container: {
-        marginTop : 10,
-        width : '100%',
+        marginTop : 5,
+        width : '90%',
         borderColor: '#eee',
         borderBottomWidth:2,
     },
     label: {
-        padding: 5,
+        padding: 2,
         paddingBottom: 0,
         color: '#252D42',
         fontSize:17,
@@ -34,12 +37,9 @@ const styles = StyleSheet.create({
         width:'100%',
     },
     input: {
-        paddingLeft: 5,
-        paddingRight: 5,
-        paddingBottom: 5,
+        padding:5,
         color:'#252D42',
         fontSize:18,
-        fontWeight: '700',
         width:'100%',
         opacity:100,
     }

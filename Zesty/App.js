@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Login from '../Zesty/scenes/authentication/Login';
-import Register from '../Zesty/scenes/authentication/Register';
+import Subscribe from '../Zesty/scenes/authentication/Subscribe';
+import SubscribeFinal from '../Zesty/scenes/authentication/SubscribeFinal';
 import itsworks from '../Zesty/scenes/authentication/itsworks';
+import Profil from "./scenes/main/Profil";
 import { Router, Scene } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -24,25 +26,32 @@ export default class App extends Component {
             <Scene
                 key={'login'}
                 component={Login}
-                initial={true}
+                //initial={true}
                 hideNavBar
             />
             <Scene
-                key={'register'}
+                key={'subscribe'}
                 title={' '}
-                component={Register}
+                component={Subscribe}
+                hideNavBar
+            />
+            <Scene
+                key={'subscribeFinal'}
+                title={' '}
+                component={SubscribeFinal}
                 hideNavBar
             />
             <Scene
                 key="tabbar"
                 tabs={true}
                 tabBarStyle={{ backgroundColor: '#FFFFFF' }}
+                initial={true}
             >
             <Scene
                 key={'calendar'}
                 title={' '}
                 component={itsworks}
-                initial={true}
+                //initial={true}
                 iconName={'calendar'}
                 icon={TabIcon}
                 hideNavBar
@@ -73,8 +82,9 @@ export default class App extends Component {
             />
             <Scene
                 key={'profil'}
+                initial={true}
                 title={' '}
-                component={itsworks}
+                component={Profil}
                 iconName={'user'}
                 icon={TabIcon}
                 hideNavBar
