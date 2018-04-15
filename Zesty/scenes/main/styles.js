@@ -1,15 +1,11 @@
 import { StyleSheet, Dimensions } from 'react-native';
-const window = Dimensions.get('window');
-
-export const IMAGE_HEIGHT = window.width / 2;
-export const IMAGE_HEIGHT_SMALL = window.width /5;
 
 export default StyleSheet.create({
 container: {
     justifyContent: 'center',
     margin:10,
 },
-label: {
+titre: {
     marginTop:10,
     padding: 2,
     paddingBottom: 0,
@@ -18,6 +14,16 @@ label: {
     fontWeight: '700',
     width:'90%',
 },
-
+button: {
+    marginTop:30,
+    alignItems: 'center',
+},
+label: {
+    marginTop:6,
+    color: '#252D42',
+    fontSize:17,
+    fontWeight: '700',
+    width:'100%',
+}
 });
 

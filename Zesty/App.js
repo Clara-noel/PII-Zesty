@@ -4,9 +4,11 @@ import Login from '../Zesty/scenes/authentication/Login';
 import Subscribe from '../Zesty/scenes/authentication/Subscribe';
 import SubscribeFinal from '../Zesty/scenes/authentication/SubscribeFinal';
 import itsworks from '../Zesty/scenes/authentication/itsworks';
-import Profil from "./scenes/main/Profil";
+import Profil from './scenes/main/profil/Profil';
 import { Router, Scene } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ModificationPrenom from './scenes/main/profil/modificationPrenom';
+import ModificationEmail from './scenes/main/profil/modificationEmail';
 
 const TabIcon = ({ focused, title, iconName}) => {
     return (
@@ -17,7 +19,6 @@ const TabIcon = ({ focused, title, iconName}) => {
     )
 };
 
-
 export default class App extends Component {
     render() {
         return (
@@ -26,7 +27,7 @@ export default class App extends Component {
             <Scene
                 key={'login'}
                 component={Login}
-                //initial={true}
+                initial={true}
                 hideNavBar
             />
             <Scene
@@ -42,16 +43,28 @@ export default class App extends Component {
                 hideNavBar
             />
             <Scene
+                key={'modificationPrenom'}
+                title={' '}
+                component={ModificationPrenom}
+                hideNavBar
+            />
+            <Scene
+                key={'modificationEmail'}
+                title={' '}
+                component={ModificationEmail}
+                hideNavBar
+            />
+            <Scene
                 key="tabbar"
                 tabs={true}
                 tabBarStyle={{ backgroundColor: '#FFFFFF' }}
-                initial={true}
+                //initial={true}
             >
             <Scene
                 key={'calendar'}
                 title={' '}
                 component={itsworks}
-                //initial={true}
+                initial={true}
                 iconName={'calendar'}
                 icon={TabIcon}
                 hideNavBar
@@ -82,7 +95,7 @@ export default class App extends Component {
             />
             <Scene
                 key={'profil'}
-                initial={true}
+                //initial={true}
                 title={' '}
                 component={Profil}
                 iconName={'user'}

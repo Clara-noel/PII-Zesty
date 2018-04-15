@@ -3,7 +3,7 @@ import { firebaseApp, firebaseRef } from '../../services/Firebase'
 import {StyleSheet, Text, View, Image, ImageBackground, Animated, Keyboard, StatusBar} from 'react-native';
 import _ from 'lodash';
 import { Input } from '../../components/Input';
-import { ButtonConnexion, ButtonInscription, ButtonFacebook } from '../../components/Button';
+import { ButtonPink, ButtonWhite, ButtonBlue } from '../../components/Button';
 import { Actions } from 'react-native-router-flux';
 import itsworks from './itsworks';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL} from '../authentication/styles';
@@ -26,7 +26,8 @@ export default class Login extends Component {
 
     _login() {
        firebaseRef.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
-            Actions.calendar()
+            var Id = firebaseRef.auth().currentUser.uid
+            Actions.profil({monId:Id})
         }).catch(function(error){
             console.log(error.code)
             console.log(error.message)
@@ -89,9 +90,9 @@ export default class Login extends Component {
             onChangeText={password => this.setState({password})}
             value={this.state.password}
             />
-            <ButtonConnexion onPress={this._login}>Se connecter</ButtonConnexion>
-            <ButtonInscription onPress={this._register}>S'inscrire</ButtonInscription>
-            <ButtonFacebook>Connexion avec Facebook</ButtonFacebook>
+            <ButtonPink onPress={this._login}>Se connecter</ButtonPink>
+            <ButtonWhite onPress={this._register}>S'inscrire</ButtonWhite>
+            <ButtonBlue>Connexion avec Facebook</ButtonBlue>
             </Animated.View>
             </View>
             </ImageBackground>

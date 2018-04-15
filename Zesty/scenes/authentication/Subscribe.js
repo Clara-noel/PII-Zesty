@@ -3,7 +3,7 @@ import { firebaseApp, firebaseRef } from '../../services/Firebase'
 import {StyleSheet, Text, View, Image, ImageBackground, Animated, Keyboard, ScrollView, StatusBar} from 'react-native';
 import _ from 'lodash';
 import { Input } from '../../components/Input';
-import { ButtonConnexion, ButtonInscription, ButtonFacebook, ButtonBack } from '../../components/Button';
+import { ButtonPink, ButtonBack } from '../../components/Button';
 import { Actions } from 'react-native-router-flux';
 import itsworks from './itsworks';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL} from '../authentication/styles';
@@ -37,7 +37,7 @@ export default class Subscribe extends Component {
             allergies = allergies + 'A2;';
             if(this.state.arachide)
             allergies = allergies + 'A3;';
-            Actions.subscribeFinal({regime:'P' + this.state.regAl, prenom:this.state.prenom, allergies:allergies})
+            Actions.subscribeFinal({regime:'P' + this.state.regAl + ';', prenom:this.state.prenom, allergies:allergies})
         }
         else
         {
@@ -49,9 +49,6 @@ export default class Subscribe extends Component {
     }
     checked = (title) => {
         this.setState({title:!this.state.title});
-    }
-    test = () => {
-        this.backgroundColor = '#FFF'
     }
     componentWillMount () {
         this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
@@ -143,7 +140,7 @@ export default class Subscribe extends Component {
                 containerStyle={{width:'80%', height:35, padding:5, marginBottom:0}}
                 onPress={() => this.setState({ arachide: !this.state.arachide})}
             />
-            <ButtonConnexion onPress={this._subscribe}>Continuer</ButtonConnexion>
+            <ButtonPink onPress={this._subscribe}>Continuer</ButtonPink>
             <ButtonBack onPress={this._back}>Se connecter</ButtonBack>
             </Animated.View>
             </View>

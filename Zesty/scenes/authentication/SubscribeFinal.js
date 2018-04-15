@@ -3,7 +3,7 @@ import { firebaseApp, firebaseRef } from '../../services/Firebase'
 import {StyleSheet, Text, View, Image, ImageBackground, Animated, Keyboard, StatusBar} from 'react-native';
 import _ from 'lodash';
 import { Input } from '../../components/Input';
-import { ButtonConnexion, ButtonInscription, ButtonFacebook, ButtonBack } from '../../components/Button';
+import { ButtonWhite, ButtonBack } from '../../components/Button';
 import { Actions } from 'react-native-router-flux';
 import itsworks from './itsworks';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL} from '../authentication/styles';
@@ -35,13 +35,12 @@ export default class SubscribeFinal extends Component {
         });
     }
     _registerDB(monprenom, monregime, mesallergies, monId, monemail) {
-        console.log(monId)
         var usersRef = firebaseRef.database().ref().child("Users/" + monId);
         usersRef.update({
         InformationsPersonnelles: {
             Prenom: monprenom,
             Regime: monregime,
-            Allergie: mesallergies,
+            Allergies: mesallergies,
             Email: monemail,
         }
         });
@@ -112,7 +111,7 @@ export default class SubscribeFinal extends Component {
             onChangeText={verifyPassword => this.setState({verifyPassword})}
             value={this.state.verifyPassword}
             />
-            <ButtonInscription onPress={this._subscribeFinal}>Inscription</ButtonInscription>
+            <ButtonWhite onPress={this._subscribeFinal}>Inscription</ButtonWhite>
             <ButtonBack onPress={this._back}>Retour</ButtonBack>
             </Animated.View>
             </View>

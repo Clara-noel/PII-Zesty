@@ -1,26 +1,26 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-const ButtonInscription = ({ onPress, children}) => {
+const ButtonWhite = ({ onPress, children}) => {
     return (
-        <TouchableOpacity onPress={onPress} style={styles.buttonInscription}>
-        <Text style={styles.inscription}>{children}</Text>
+        <TouchableOpacity onPress={onPress} style={styles.buttonWhite}>
+        <Text style={styles.white}>{children}</Text>
         </TouchableOpacity>
     )
 }
 
-const ButtonConnexion = ({ onPress, children}) => {
+const ButtonPink = ({ onPress, children}) => {
     return (
-        <TouchableOpacity onPress={onPress} style={styles.buttonConnexion}>
-        <Text style={styles.connexion}>{children}</Text>
+        <TouchableOpacity onPress={onPress} style={styles.ButtonPink}>
+        <Text style={styles.pink}>{children}</Text>
         </TouchableOpacity>
     )
 }
 
-const ButtonFacebook = ({ onPress, children}) => {
+const ButtonBlue = ({ onPress, children}) => {
     return (
-        <TouchableOpacity onPress={onPress} style={styles.buttonFacebook}>
-        <Text style={styles.facebook}>{children}</Text>
+        <TouchableOpacity onPress={onPress} style={styles.buttonBlue}>
+        <Text style={styles.blue}>{children}</Text>
         </TouchableOpacity>
     )
 }
@@ -33,7 +33,7 @@ const ButtonBack = ({ onPress, children}) => {
 }
 
 const styles = StyleSheet.create({
-    buttonConnexion: {
+    ButtonPink: {
         marginTop: 25,
         padding:12,
         width: '80%',
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor:'#D33C5B',
     },
-    buttonInscription:{
+    buttonWhite:{
         marginTop: 8,
         padding: 12,
         width: '80%',
@@ -49,17 +49,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor:'#eee',
     },
-    connexion: {
+    pink: {
         color: '#eee',
         fontWeight: '700',
         fontSize:18,
     },
-    inscription: {
+    white: {
         fontWeight: '700',
         fontSize:18,
         color: '#D33C5B',
     },
-    buttonFacebook:{
+    buttonBlue:{
         marginTop: 8,
         padding: 12,
         width: '80%',
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor:'#3B5998',
     },
-    facebook: {
+    blue: {
         color: '#eee',
         fontWeight: '700',
         fontSize:18,
@@ -85,4 +85,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export { ButtonConnexion, ButtonInscription, ButtonFacebook, ButtonBack };
+export { ButtonPink, ButtonWhite, ButtonBlue, ButtonBack };
