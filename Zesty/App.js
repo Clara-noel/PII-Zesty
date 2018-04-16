@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import { Router, Scene } from 'react-native-router-flux';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import itsworks from '../Zesty/scenes/authentication/itsworks';
 import Login from '../Zesty/scenes/authentication/Login';
 import Subscribe from '../Zesty/scenes/authentication/Subscribe';
 import SubscribeFinal from '../Zesty/scenes/authentication/SubscribeFinal';
-import itsworks from '../Zesty/scenes/authentication/itsworks';
 import Profil from './scenes/main/profil/Profil';
-import { Router, Scene } from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import ModificationPrenom from './scenes/main/profil/modificationPrenom';
-import ModificationEmail from './scenes/main/profil/modificationEmail';
+import ModificationName from './scenes/main/profil/ModificationName';
+import ModificationEmail from './scenes/main/profil/ModificationEmail';
+import ModificationPassword from './scenes/main/profil/ModificationPassword';
+import ModificationDiet from './scenes/main/profil/ModificationDiet';
+import ModificationAllergies from './scenes/main/profil/ModificationAllergies';
 
 const TabIcon = ({ focused, title, iconName}) => {
     return (
@@ -43,9 +47,9 @@ export default class App extends Component {
                 hideNavBar
             />
             <Scene
-                key={'modificationPrenom'}
+                key={'modificationName'}
                 title={' '}
-                component={ModificationPrenom}
+                component={ModificationName}
                 hideNavBar
             />
             <Scene
@@ -55,10 +59,27 @@ export default class App extends Component {
                 hideNavBar
             />
             <Scene
+                key={'modificationPassword'}
+                title={' '}
+                component={ModificationPassword}
+                hideNavBar
+            />
+            <Scene
+                key={'modificationDiet'}
+                title={' '}
+                component={ModificationDiet}
+                hideNavBar
+            />
+            <Scene
+                key={'modificationAllergies'}
+                title={' '}
+                component={ModificationAllergies}
+                hideNavBar
+            />
+            <Scene
                 key="tabbar"
                 tabs={true}
                 tabBarStyle={{ backgroundColor: '#FFFFFF' }}
-                //initial={true}
             >
             <Scene
                 key={'calendar'}
@@ -95,7 +116,6 @@ export default class App extends Component {
             />
             <Scene
                 key={'profil'}
-                //initial={true}
                 title={' '}
                 component={Profil}
                 iconName={'user'}

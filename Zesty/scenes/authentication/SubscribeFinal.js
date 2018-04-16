@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { firebaseApp, firebaseRef } from '../../services/Firebase'
-import {StyleSheet, Text, View, Image, ImageBackground, Animated, Keyboard, StatusBar} from 'react-native';
+import { firebaseRef } from '../../services/Firebase'
+import { View, ImageBackground, Animated, Keyboard, StatusBar} from 'react-native';
 import _ from 'lodash';
 import { Input } from '../../components/Input';
 import { ButtonWhite, ButtonBack } from '../../components/Button';
@@ -12,8 +12,8 @@ import logo from '../../ressources/Logo.png';
 export default class SubscribeFinal extends Component {
     constructor(props) {
         super(props)
-        this.prenom = this.props.prenom;
-        this.regime = this.props.regime;
+        this.firstname = this.props.firstname;
+        this.diet = this.props.diet;
         this.allergies = this.props.allergies;
         this.state = {
             email: '',
@@ -27,21 +27,21 @@ export default class SubscribeFinal extends Component {
     }
     _subscribeFinal() {
         firebaseRef.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(() => {
-            var monId = firebaseRef.auth().currentUser.uid
-            this._registerDB(this.prenom, this.regime, this.allergies, monId, this.state.email);
+            var myId = firebaseRef.auth().currentUser.uid
+            this._registerDB(this.firstname, this.diet, this.allergies, myId, this.state.email);
         }).catch(function(error) {
             console.log(error.code)
             console.log(error.message)
         });
     }
-    _registerDB(monprenom, monregime, mesallergies, monId, monemail) {
-        var usersRef = firebaseRef.database().ref().child("Users/" + monId);
+    _registerDB(myname, mydiet, myallergies, myId, myemail) {
+        var usersRef = firebaseRef.database().ref().child("Users/" + myId);
         usersRef.update({
         InformationsPersonnelles: {
-            Prenom: monprenom,
-            Regime: monregime,
-            Allergies: mesallergies,
-            Email: monemail,
+            Prenom: myname,
+            Regime: mydiet,
+            Allergies: myallergies,
+            Email: myemail,
         }
         });
         Actions.login();

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { firebaseApp, firebaseRef } from '../../services/Firebase'
-import {StyleSheet, Text, View, Image, ImageBackground, Animated, Keyboard, StatusBar} from 'react-native';
+import { firebaseRef } from '../../services/Firebase'
+import { View, Image, ImageBackground, Animated, Keyboard, StatusBar} from 'react-native';
 import _ from 'lodash';
 import { Input } from '../../components/Input';
 import { ButtonPink, ButtonWhite, ButtonBlue } from '../../components/Button';
@@ -27,7 +27,7 @@ export default class Login extends Component {
     _login() {
        firebaseRef.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
             var Id = firebaseRef.auth().currentUser.uid
-            Actions.profil({monId:Id})
+            Actions.profil({myId:Id})
         }).catch(function(error){
             console.log(error.code)
             console.log(error.message)
@@ -77,14 +77,14 @@ export default class Login extends Component {
             <Animated.Image source={logo} style={[styles.logo, { height: this.imageHeight }]} />
             <Input
             title='EMAIL'
-            placeholder='Tapez votre adresse email ...'
+            placeholder='Votre adresse email ...'
             label='Email'
             onChangeText={email => this.setState({email})}
             value={this.state.mail}
             />
             <Input
             title='MOT DE PASSE'
-            placeholder='Tapez votre mot de passe ...'
+            placeholder='Votre mot de passe ...'
             label='Password'
             secureTextEntry
             onChangeText={password => this.setState({password})}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { firebaseApp, firebaseRef } from '../../services/Firebase'
-import {StyleSheet, Text, View, Image, ImageBackground, Animated, Keyboard, ScrollView, StatusBar} from 'react-native';
+import { firebaseRef } from '../../services/Firebase'
+import { Text, View, ImageBackground, Animated, Keyboard, StatusBar} from 'react-native';
 import _ from 'lodash';
 import { Input } from '../../components/Input';
 import { ButtonPink, ButtonBack } from '../../components/Button';
@@ -15,11 +15,11 @@ export default class Subscribe extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            regAl: '',
-            prenom: '',
+            diet: '',
+            firstname: '',
             lactose: false,
-            arachide: false,
-            gambas: false,
+            peanuts: false,
+            crustaceans: false,
         }
         this._subscribe= this._subscribe.bind(this)
 
@@ -28,16 +28,16 @@ export default class Subscribe extends Component {
     }
 
     _subscribe() {
-        if(this.state.prenom != '')
+        if(this.state.firstname != '')
         {
             var allergies = '';
             if(this.state.lactose)
             allergies = allergies + 'A1;';
-            if(this.state.gambas)
+            if(this.state.crustaceans)
             allergies = allergies + 'A2;';
-            if(this.state.arachide)
+            if(this.state.peanuts)
             allergies = allergies + 'A3;';
-            Actions.subscribeFinal({regime:'P' + this.state.regAl + ';', prenom:this.state.prenom, allergies:allergies})
+            Actions.subscribeFinal({diet:'P' + this.state.diet + ';', firstname:this.state.firstname, allergies:allergies})
         }
         else
         {
@@ -92,9 +92,9 @@ export default class Subscribe extends Component {
             <Input
             title='PRENOM'
             placeholder= 'Entrez votre prénom'
-            label='Prenom'
-            onChangeText={prenom => this.setState({prenom})}
-            value={this.state.prenom}
+            label='firstname'
+            onChangeText={firstname => this.setState({firstname})}
+            value={this.state.firstname}
             />
             <Text style={styles.label}>Régime alimentaire :</Text>
             <ModalDropdown
@@ -105,7 +105,7 @@ export default class Subscribe extends Component {
                 style={{marginTop: 2, padding: 3, width: '80%', borderRadius: 4, backgroundColor:'#eee'}}
                 dropdownStyle={{marginTop: 2, padding: 3, backgroundColor:'#eee'}}
                 dropdownTextStyle={{fontSize: 16, padding: 8, width:'100%', color:'#3B5998'}}
-                onSelect={(regAl) => this.setState({regAl})}/>
+                onSelect={(diet) => this.setState({diet})}/>
             <Text style={styles.label}>Intolérances et allergies :</Text>
             <CheckBox
                 title="Lactose"
@@ -119,26 +119,26 @@ export default class Subscribe extends Component {
                 onPress={() => this.setState({ lactose: !this.state.lactose })}
             />
             <CheckBox
-                title="Gambas"
-                checked={this.state.gambas}
+                title="Crustacés"
+                checked={this.state.crustaceans}
                 checkedIcon='dot-circle-o'
                 uncheckedIcon='circle-o'
                 checkedColor='#D33C5B'
                 uncheckedColor='#3B5998'
                 textStyle={{color: '#3B5998'}}
                 containerStyle={{width:'80%', height:35, padding:5, marginBottom:0}}
-                onPress={() => this.setState({ gambas: !this.state.gambas})}
+                onPress={() => this.setState({ crustaceans: !this.state.crustaceans})}
             />
             <CheckBox
                 title="Arachide"
-                checked={this.state.arachide}
+                checked={this.state.peanuts}
                 checkedIcon='dot-circle-o'
                 uncheckedIcon='circle-o'
                 checkedColor='#D33C5B'
                 uncheckedColor='#3B5998'
                 textStyle={{color: '#3B5998'}}
                 containerStyle={{width:'80%', height:35, padding:5, marginBottom:0}}
-                onPress={() => this.setState({ arachide: !this.state.arachide})}
+                onPress={() => this.setState({ peanuts: !this.state.peanuts})}
             />
             <ButtonPink onPress={this._subscribe}>Continuer</ButtonPink>
             <ButtonBack onPress={this._back}>Se connecter</ButtonBack>

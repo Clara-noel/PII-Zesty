@@ -24,6 +24,9 @@ label: {
     fontSize:17,
     fontWeight: '700',
     width:'100%',
-}
+},
+dropdown: {
+    width:'100%',
+    }
 });
 

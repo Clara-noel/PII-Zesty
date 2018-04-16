@@ -1,28 +1,24 @@
 import React, { Component } from 'react';
-import { firebaseApp, firebaseRef } from '../../../services/Firebase';
-import {StyleSheet, Text, View, Image, StatusBar} from 'react-native';
+import { firebaseRef } from '../../../services/Firebase';
+import { Text, View, StatusBar} from 'react-native';
 import _ from 'lodash';
-import { Input } from '../../../components/Input';
 import { ButtonPink } from '../../../components/Button';
 import { Actions } from 'react-native-router-flux';
 import { Header } from '../../../components/Header'
 import style from '../styles';
-import { Button } from 'react-native-elements';
-import ModalDropdown from 'react-native-modal-dropdown';
 import { ButtonInput } from '../../../components/ButtonInput';
 
 export default class Profil extends Component {
     constructor(props) {
         super(props)
-        this.iD = this.props.monId;
+        this.iD = this.props.myId;
         this.state = {
             email: '',
-            prenom: '',
-            regime: '',
+            firstname: '',
+            diet: '',
             allergies: '',
-            allergiesIntitule: '',
-            regimesIntitule: '',
-            editable: false,
+            allergiesDesignation: '',
+            dietDesignation: '',
         }
     }
 
@@ -30,49 +26,61 @@ export default class Profil extends Component {
         this.renderUser()
     }
     renderUser = () => {
+        this.setState({allergies: ''});
+        this.setState({diet: ''});
+        this.setState({allergiesDesignation: ''});
+        this.setState({dietDesignation: ''});
         const userRef = firebaseRef.database().ref().child("Users/" + this.iD + "/InformationsPersonnelles/")
         userRef.once('value', (snapshot) => {
             let user = snapshot.val();
-            this.setState({prenom: user.Prenom});
-            this.setState({regime: user.Regime});
+            this.setState({firstname: user.Prenom});
+            this.setState({diet: user.Regime});
             this.setState({allergies: user.Allergies});
             this.setState({email: user.Email});
-            console.log(user.Email)
             if(this.state.allergies !== '' && this.state.allergies !== undefined)
-            this.decoupagePref(user.Allergies, "Allergies")
-            if(this.state.regime !== '' && this.state.regime !== undefined)
-            this.decoupagePref(user.Regime, "Regimes")
+            this.sectionPref(user.Allergies, "Allergies")
+            if(this.state.diet !== '' && this.state.diet !== undefined)
+            this.sectionPref(user.Regime, "Regimes")
         })
     }
-    decoupagePref = (preferences, intitulePref) => {
+    sectionPref = (preferences, prefDesignation) => {
         var str = preferences
         var i = 0;
         while(i<str.length)
         {
-            var newStr = str.substr(i,i+2)
-            this.recupereIntitule(newStr, intitulePref)
+            var newStr = str.substr(i,2)
+            this.getDesignation(newStr, prefDesignation)
             i =i +3;
         }
     }
-    recupereIntitule= (str, intitulePref) => {
-        const preferencesRef = firebaseRef.database().ref().child(intitulePref + "/" + str)
+    getDesignation= (str, prefDesignation) => {
+        const preferencesRef = firebaseRef.database().ref().child(prefDesignation + "/" + str)
         preferencesRef.once('value', (snapshot) => {
             let preference = snapshot.val();
-            if (intitulePref == "Allergies")
-            this.setState({allergiesIntitule: this.state.allergiesIntitule + " " + preference});
+            if (prefDesignation == "Allergies")
+            this.setState({allergiesDesignation: this.state.allergiesDesignation + " " + preference});
             else
             {
-                this.setState({regimesIntitule: this.state.regimesIntitule + " " + preference});
+                this.setState({dietDesignation: this.state.dietDesignation + " " + preference});
             }
         })
     }
-    modificationPrenom() {
-        Actions.modificationPrenom({ancienPrenom:this.state.prenom, monId:this.iD})
-        this.renderUser()
+    modificationName() {
+        Actions.modificationName({oldName:this.state.firstname, myId:this.iD})
     }
     modificationEmail() {
-        Actions.modificationEmail({ancienEmail:this.state.email})
-}
+        Actions.modificationEmail({oldEmail:this.state.email, myId:this.iD})
+    }
+    modificationPassword() {
+        Actions.modificationPassword({oldPassword:this.state.email, myId:this.iD})
+    }
+    modificationDiet() {
+        Actions.modificationDiet({myId:this.iD})
+    }
+    modificationAllergies() {
+        Actions.modificationAllergies({myId:this.iD})
+    }
+
     render() {
         return (
             <View style={style.container}>
@@ -81,17 +89,17 @@ export default class Profil extends Component {
 
             <Text style={style.titre}>Informations personnelles</Text>
             <Text style={style.label}>Prénom</Text>
-            <ButtonInput onPress={() => this.modificationPrenom()}>{this.state.prenom}</ButtonInput>
+            <ButtonInput onPress={() => this.modificationName()}>{this.state.firstname}</ButtonInput>
             <Text style={style.label}>Adresse email</Text>
             <ButtonInput onPress={() => this.modificationEmail()}>{this.state.email}</ButtonInput>
             <Text style={style.label}>Mot de passe</Text>
-            <ButtonInput>********</ButtonInput>
+            <ButtonInput onPress={() => this.modificationPassword()}>********</ButtonInput>
 
-            <Text style={style.titre}>Préférences alimentaire</Text>
+            <Text style={style.titre}>Préférences alimentaires</Text>
             <Text style={style.label}>Régime alimentaire</Text>
-            <ButtonInput>{this.state.regimesIntitule}</ButtonInput>
+            <ButtonInput onPress={() => this.modificationDiet()}>{this.state.dietDesignation}</ButtonInput>
             <Text style={style.label}>Allergies</Text>
-            <ButtonInput>{this.state.allergiesIntitule}</ButtonInput>
+            <ButtonInput onPress={() => this.modificationAllergies()}>{this.state.allergiesDesignation}</ButtonInput>
             </View>
     );
 }

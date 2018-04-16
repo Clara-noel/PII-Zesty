@@ -8,43 +8,39 @@ import { Actions } from 'react-native-router-flux';
 import { Header } from '../../../components/Header'
 import style from '../styles';
 
-export default class ModificationEmail extends Component {
+export default class ModificationPassword extends Component {
     constructor(props) {
         super(props)
         this.iD = this.props.myId;
-        this.oldEmail = this.props.oldEmail;
         this.state = {
-            email: this.oldEmail,
+            password: '********',
         }
     }
     _back() {
         Actions.pop()
     }
-    _registerUser = () => {
+    _registerPassword = () => {
         var user = firebaseRef.auth().currentUser;
-        user.updateEmail(this.state.email).then( () => { this._registerDB() }
+        user.updatePassword(this.state.password).then( () => { Actions.profil({myId:this.iD}); }
         ).catch(function(error) {
-            alert("Le format du mail est mauvais")
+            alert("Une erreur est survenue")
         });
     }
-    _registerDB() {
-        var myemail = firebaseRef.database().ref().child("Users/" + this.iD + "/InformationsPersonnelles/");
-        myemail.update({Email:this.state.email});
-        Actions.profil({myId:this.iD});
-    }
+
     render() {
         return (
             <View style={style.container}>
             <StatusBar barStyle="light-content"/>
             <Header title='Modifications'></Header>
             <Input
-            title='EMAIL'
-            label='Email'
-            onChangeText={email => this.setState({email})}
-            value={this.state.email}
+            title='MOT DE PASSE'
+            label='Password'
+            onChangeText={password => this.setState({password})}
+            value={this.state.password}
+            secureTextEntry
             />
             <View style={style.button}>
-            <ButtonPink onPress={this._registerUser}> Enregistrer les modifications </ButtonPink>
+            <ButtonPink onPress={this._registerPassword}> Enregistrer les modifications </ButtonPink>
             <ButtonWhite onPress={this._back }> Annuler </ButtonWhite>
             </View>
             </View>

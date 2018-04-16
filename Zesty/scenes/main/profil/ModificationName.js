@@ -1,45 +1,43 @@
 import React, { Component } from 'react';
-import { firebaseApp, firebaseRef } from '../../../services/Firebase';
-import {StyleSheet, Text, View, Image, StatusBar} from 'react-native';
+import { firebaseRef } from '../../../services/Firebase';
+import { View, StatusBar} from 'react-native';
 import { Input } from '../../../components/Input';
 import _ from 'lodash';
 import { ButtonPink, ButtonWhite } from '../../../components/Button';
 import { Actions } from 'react-native-router-flux';
 import { Header } from '../../../components/Header'
 import style from '../styles';
-import { Button } from 'react-native-elements';
-import ModalDropdown from 'react-native-modal-dropdown';
 
-export default class ModificationPrenom extends Component {
+export default class ModificationName extends Component {
     constructor(props) {
         super(props)
-        this.iD = this.props.monId;
-        this.ancienPrenom = this.props.ancienPrenom;
+        this.iD = this.props.myId;
+        this.oldName = this.props.oldName;
         this.state = {
-            prenom: this.ancienPrenom,
+            firstname: this.oldName,
         }
     }
     _back() {
         Actions.pop()
     }
-    enregistrer = () => {
+    register = () => {
         var user = firebaseRef.database().ref().child("Users/" + this.iD + "/InformationsPersonnelles/");
-        user.update({Prenom:this.state.prenom});
-        Actions.profil();
+        user.update({Prenom:this.state.firstname});
+        Actions.profil({myId:this.iD});
     }
     render() {
         return (
             <View style={style.container}>
             <StatusBar barStyle="light-content"/>
-            <Header title='MODIFICATION DU PRENOM'></Header>
+            <Header title='Modifications'></Header>
             <Input
             title='PRENOM'
-            label='Prenom'
-            onChangeText={prenom => this.setState({prenom})}
-            value={this.state.prenom}
+            label='firstname'
+            onChangeText={firstname => this.setState({firstname})}
+            value={this.state.firstname}
             />
             <View style={style.button}>
-            <ButtonPink onPress={this.enregistrer}> Enregistrer les modifications </ButtonPink>
+            <ButtonPink onPress={this.register}> Enregistrer les modifications </ButtonPink>
             <ButtonWhite onPress={this._back }> Annuler </ButtonWhite>
             </View>
             </View>
