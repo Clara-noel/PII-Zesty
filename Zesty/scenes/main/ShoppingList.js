@@ -14,7 +14,7 @@ export default class ShoppingList extends Component {
         //this.iD = this.props.myId;
         this.iD = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
         this.state = {
-            listViewData: data, 
+            listViewData: data,
             newIngredient: ""
         }
     }
