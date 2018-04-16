@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const Header = ({ title }) => {
+const MyHeader = ({ title }) => {
     return (
         <View style={styles.container}>
         <Text style={styles.label}>{title}</Text>
@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
         width: '106%',
         marginTop:-10,
         marginLeft:-10,
-        height:70,
+        marginBottom:15,
+        height:80,
         backgroundColor:'#252D42',
     },
     label: {
@@ -28,4 +29,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export { Header };
+export { MyHeader };

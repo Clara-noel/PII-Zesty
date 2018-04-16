@@ -4,14 +4,15 @@ import { Text, View, StatusBar} from 'react-native';
 import _ from 'lodash';
 import { ButtonPink } from '../../../components/Button';
 import { Actions } from 'react-native-router-flux';
-import { Header } from '../../../components/Header'
+import { MyHeader } from '../../../components/MyHeader'
 import style from '../styles';
 import { ButtonInput } from '../../../components/ButtonInput';
 
 export default class Profil extends Component {
     constructor(props) {
         super(props)
-        this.iD = this.props.myId;
+        //this.iD = this.props.myId;
+        this.iD = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
         this.state = {
             email: '',
             firstname: '',
@@ -39,8 +40,10 @@ export default class Profil extends Component {
             this.setState({email: user.Email});
             if(this.state.allergies !== '' && this.state.allergies !== undefined)
             this.sectionPref(user.Allergies, "Allergies")
+            else { this.setState({allergiesDesignation: 'Non communiqué'}) }
             if(this.state.diet !== '' && this.state.diet !== undefined)
             this.sectionPref(user.Regime, "Regimes")
+            else { this.setState({dietDesignation: 'Non communiqué'}) }
         })
     }
     sectionPref = (preferences, prefDesignation) => {
@@ -85,7 +88,7 @@ export default class Profil extends Component {
         return (
             <View style={style.container}>
             <StatusBar barStyle="light-content"/>
-            <Header title='PROFIL'></Header>
+            <MyHeader title='PROFIL'></MyHeader>
 
             <Text style={style.titre}>Informations personnelles</Text>
             <Text style={style.label}>Prénom</Text>

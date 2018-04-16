@@ -3,6 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+
 import itsworks from '../Zesty/scenes/authentication/itsworks';
 import Login from '../Zesty/scenes/authentication/Login';
 import Subscribe from '../Zesty/scenes/authentication/Subscribe';
@@ -13,12 +14,13 @@ import ModificationEmail from './scenes/main/profil/ModificationEmail';
 import ModificationPassword from './scenes/main/profil/ModificationPassword';
 import ModificationDiet from './scenes/main/profil/ModificationDiet';
 import ModificationAllergies from './scenes/main/profil/ModificationAllergies';
+import ShoppingList from './scenes/main/ShoppingList';
 
 const TabIcon = ({ focused, title, iconName}) => {
     return (
     <View
     style={{borderBottomWidth: focused ? 25 : 25, borderBottomColor: 'transparent'}}> 
-    <Icon name={iconName} color={focused ? '#ff4757' : '#747d8c'} size={35} /> 
+    <Icon name={iconName} color={focused ? '#ff4757' : '#747d8c'} size={30} /> 
     </View>
     )
 };
@@ -31,7 +33,7 @@ export default class App extends Component {
             <Scene
                 key={'login'}
                 component={Login}
-                initial={true}
+                //initial={true}
                 hideNavBar
             />
             <Scene
@@ -80,12 +82,13 @@ export default class App extends Component {
                 key="tabbar"
                 tabs={true}
                 tabBarStyle={{ backgroundColor: '#FFFFFF' }}
+                initial={true}
             >
             <Scene
                 key={'calendar'}
                 title={' '}
                 component={itsworks}
-                initial={true}
+                //initial={true}
                 iconName={'calendar'}
                 icon={TabIcon}
                 hideNavBar
@@ -102,17 +105,18 @@ export default class App extends Component {
                 key={'recipes'}
                 title={' '}
                 component={itsworks}
-                iconName={'rocket'}
+                iconName={'book'}
                 icon={TabIcon}
                 hideNavBar
             />
             <Scene
                 key={'shopping-list'}
                 title={' '}
-                component={itsworks}
+                component={ShoppingList}
                 iconName={'shopping-cart'}
                 icon={TabIcon}
                 hideNavBar
+                initial={true}
             />
             <Scene
                 key={'profil'}

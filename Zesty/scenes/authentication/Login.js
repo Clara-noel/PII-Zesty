@@ -29,8 +29,7 @@ export default class Login extends Component {
             var Id = firebaseRef.auth().currentUser.uid
             Actions.profil({myId:Id})
         }).catch(function(error){
-            console.log(error.code)
-            console.log(error.message)
+            alert('L’adresse et/ou le mot de passe sont erronés')
         })
     }
     _register() {

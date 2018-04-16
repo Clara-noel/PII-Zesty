@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { firebaseRef } from '../../../services/Firebase';
-import { View, StatusBar} from 'react-native';
+import { View, StatusBar, Text} from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import _ from 'lodash';
 import { ButtonPink, ButtonWhite } from '../../../components/Button';
 import { Actions } from 'react-native-router-flux';
-import { Header } from '../../../components/Header'
+import { MyHeader } from '../../../components/MyHeader'
 import style from '../styles';
 
 export default class ModificationDiet extends Component {
@@ -25,7 +25,8 @@ export default class ModificationDiet extends Component {
         return (
             <View style={style.container}>
             <StatusBar barStyle="light-content"/>
-            <Header title='Modifications'></Header>
+            <MyHeader title='Modifications'></MyHeader>
+            <Text style={style.label}>REGIME ALIMENTAIRE</Text>
             <ModalDropdown
                 style = {style.dropdown}
                 options={['Sans régime particulier', 'Végétarien','Vegan','Sans viande','Sans poisson','Sans oeuf','Sans porc','Sans boeuf' ]}

@@ -5,7 +5,7 @@ import { Input } from '../../../components/Input';
 import _ from 'lodash';
 import { ButtonPink, ButtonWhite } from '../../../components/Button';
 import { Actions } from 'react-native-router-flux';
-import { Header } from '../../../components/Header'
+import { MyHeader } from '../../../components/MyHeader'
 import style from '../styles';
 
 export default class ModificationName extends Component {
@@ -29,7 +29,7 @@ export default class ModificationName extends Component {
         return (
             <View style={style.container}>
             <StatusBar barStyle="light-content"/>
-            <Header title='Modifications'></Header>
+            <MyHeader title='Modifications'></MyHeader>
             <Input
             title='PRENOM'
             label='firstname'

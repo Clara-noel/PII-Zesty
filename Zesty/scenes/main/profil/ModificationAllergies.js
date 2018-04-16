@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { firebaseRef } from '../../../services/Firebase';
-import { View, StatusBar} from 'react-native';
+import { View, StatusBar, Text} from 'react-native';
 import _ from 'lodash';
 import { ButtonPink, ButtonWhite } from '../../../components/Button';
 import { Actions } from 'react-native-router-flux';
-import { Header } from '../../../components/Header'
+import { MyHeader } from '../../../components/MyHeader'
 import style from '../styles';
 import { CheckBox } from 'react-native-elements';
 
@@ -37,7 +37,8 @@ export default class ModificationAllergies extends Component {
         return (
             <View style={style.container}>
             <StatusBar barStyle="light-content"/>
-            <Header title='Modifications'></Header>
+            <MyHeader title='Modifications'></MyHeader>
+            <Text style={style.label}>REGIME ALIMENTAIRE</Text>
             <CheckBox
                 title="Lactose"
                 checked={this.state.lactose}
@@ -46,7 +47,7 @@ export default class ModificationAllergies extends Component {
                 checkedColor='#D33C5B'
                 uncheckedColor='#3B5998'
                 textStyle={{color: '#3B5998'}}
-                containerStyle={{width:'80%', height:35, padding:5, marginBottom:0}}
+                containerStyle={{width:'95%', height:45, padding:5, paddingLeft:10, marginBottom:0}}
                 onPress={() => this.setState({ lactose: !this.state.lactose })}
             />
             <CheckBox
@@ -57,7 +58,7 @@ export default class ModificationAllergies extends Component {
                 checkedColor='#D33C5B'
                 uncheckedColor='#3B5998'
                 textStyle={{color: '#3B5998'}}
-                containerStyle={{width:'80%', height:35, padding:5, marginBottom:0}}
+                containerStyle={{width:'95%', height:45, padding:5, paddingLeft:10, marginBottom:0}}
                 onPress={() => this.setState({ crustaceans: !this.state.crustaceans})}
             />
             <CheckBox
@@ -68,7 +69,7 @@ export default class ModificationAllergies extends Component {
                 checkedColor='#D33C5B'
                 uncheckedColor='#3B5998'
                 textStyle={{color: '#3B5998'}}
-                containerStyle={{width:'80%', height:35, padding:5, marginBottom:0}}
+                containerStyle={{width:'95%', height:45, padding:5, paddingLeft:10, marginBottom:0}}
                 onPress={() => this.setState({ peanuts: !this.state.peanuts})}
             />
             <View style={style.button}>
