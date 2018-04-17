@@ -21,6 +21,8 @@ const styles = StyleSheet.create({
         width : '96%',
         borderColor: 'rgba(37, 45, 66, 0.2)',
         borderBottomWidth:1,
+        backgroundColor:'rgba(244, 244, 249, 0.3)',
+        padding:6,
     },
     input: {
         padding:2,

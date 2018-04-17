@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Text, View, StatusBar, ListView } from 'react-native';
+import { Text, View, StatusBar, ListView, RefreshControl } from 'react-native';
 import { Container, Content, Form, Input, Item, Button, Label, Icon, List, ListItem, Header } from 'native-base';
 import { firebaseRef } from '../../services/Firebase';
 import { MyHeader } from '../../components/MyHeader';
@@ -10,12 +10,13 @@ var data = []
 export default class ShoppingList extends Component {
     constructor(props){
         super(props);
+        var Id = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
+        //var Id = firebaseRef.auth().currentUser.uid
         this.ds =  new ListView.DataSource({rowHasChanged: (r1, r2) => 1 !== r2})
-        //this.iD = this.props.myId;
-        this.iD = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
+        this.iD = Id;
         this.state = {
             listViewData: data,
-            newIngredient: ""
+            newIngredient: "",
         }
     }
     componentDidMount() {
@@ -31,6 +32,7 @@ export default class ShoppingList extends Component {
         firebaseRef.database().ref('Users/' + this.iD + '/ShoppingList').child(key).set({Ingredient:data})
         newIngredient => this.setState({newIngredient: ''})
         this.setState({newIngredient:''})
+        console.log('la' + this.state.listViewData)
     }
 
     async deleteRow(secId, rowId, rowMap, data) {
@@ -71,7 +73,7 @@ export default class ShoppingList extends Component {
                                     <Text style={style.item}>{data.val().Ingredient}</Text>
                                 </ListItem>
                             }
-                            renderRightHiddenRow={(data, secId, rowId, rowMap) => 
+                            renderRightHiddenRow={(data, secId, rowId, rowMap) =>
                                 <Button full success onPress={() => this.deleteRow(secId, rowId, rowMap, data)}>
                                     <Icon name="md-checkmark"/>
                                 </Button>

@@ -42,6 +42,13 @@ buttonAdd: {
     marginLeft:-2,
     marginTop:2,
 },
+buttonSearch: {
+    backgroundColor:'rgba(37, 45, 66, 0.8)',
+    height:50,
+    width:50,
+    marginLeft:-2,
+    marginTop:2,
+},
 content: {
     width:'100%',
     borderWidth:0,
@@ -58,12 +65,30 @@ listItem: {
     borderColor:'rgba(37, 45, 66, 0.1)',
     marginTop:1,
     marginBottom:1,
-    padding:10,
 },
 item: {
-    fontSize:17,
+    fontSize:18,
     fontWeight:'bold',
     color: '#252D42',
+    marginLeft:10,
+    marginRight:50,
+    //marginTop:20,
+},
+listItemRecipe: {
+    borderWidth:1,
+    borderColor:'rgba(37, 45, 66, 0.1)',
+    padding:10,
+},
+contentRecipe: {
+    width:'105%',
+    borderWidth:0,
+    marginLeft:-8,
+},
+image:{
+    width: 120, 
+    height: 80,
+    margin:-10,
+
 }
 });
 

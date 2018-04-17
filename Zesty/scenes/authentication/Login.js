@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { firebaseRef } from '../../services/Firebase'
+import firebase from 'firebase';
 import { View, Image, ImageBackground, Animated, Keyboard, StatusBar} from 'react-native';
 import _ from 'lodash';
 import { Input } from '../../components/Input';
@@ -25,15 +26,28 @@ export default class Login extends Component {
     }
 
     _login() {
-       firebaseRef.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
+        firebaseRef.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
             var Id = firebaseRef.auth().currentUser.uid
-            Actions.profil({myId:Id})
+            Actions.profil()
         }).catch(function(error){
             alert('L’adresse et/ou le mot de passe sont erronés')
         })
     }
     _register() {
     Actions.subscribe();
+    }
+    async loginWithFacebook() {
+        const {type, token} = await Expo.Facebook.logInWithReadPermissionsAsync('2188292048109750', {permissions: ['public_profile']})
+
+        if(type == 'success') {
+            const credential = firebase.auth.FacebookAuthProvider.credential(token)
+            firebaseRef.auth().signInWithCredential(credential).then(() => {
+                var Id = firebaseRef.auth().currentUser.uid
+                Actions.profil({myId:Id})
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
     }
     componentWillMount () {
         this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
@@ -91,7 +105,7 @@ export default class Login extends Component {
             />
             <ButtonPink onPress={this._login}>Se connecter</ButtonPink>
             <ButtonWhite onPress={this._register}>S'inscrire</ButtonWhite>
-            <ButtonBlue>Connexion avec Facebook</ButtonBlue>
+            <ButtonBlue onPress={() => this.loginWithFacebook()}>Connexion avec Facebook</ButtonBlue>
             </Animated.View>
             </View>
             </ImageBackground>

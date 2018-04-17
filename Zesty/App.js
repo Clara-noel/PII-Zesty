@@ -15,12 +15,12 @@ import ModificationPassword from './scenes/main/profil/ModificationPassword';
 import ModificationDiet from './scenes/main/profil/ModificationDiet';
 import ModificationAllergies from './scenes/main/profil/ModificationAllergies';
 import ShoppingList from './scenes/main/ShoppingList';
+import RecipesList from './scenes/main/recipes/RecipesList';
 
-const TabIcon = ({ focused, title, iconName}) => {
+const TabIcon = ({ focused, iconName}) => {
     return (
-    <View
-    style={{borderBottomWidth: focused ? 25 : 25, borderBottomColor: 'transparent'}}> 
-    <Icon name={iconName} color={focused ? '#ff4757' : '#747d8c'} size={30} /> 
+    <View style={{marginTop:10}}>
+    <Icon name={iconName} color={focused ? '#D33C5B' : '#747d8c'} size={30}/> 
     </View>
     )
 };
@@ -33,48 +33,41 @@ export default class App extends Component {
             <Scene
                 key={'login'}
                 component={Login}
-                //initial={true}
+                initial={true}
                 hideNavBar
             />
             <Scene
                 key={'subscribe'}
-                title={' '}
                 component={Subscribe}
                 hideNavBar
             />
             <Scene
                 key={'subscribeFinal'}
-                title={' '}
                 component={SubscribeFinal}
                 hideNavBar
             />
             <Scene
                 key={'modificationName'}
-                title={' '}
                 component={ModificationName}
                 hideNavBar
             />
             <Scene
                 key={'modificationEmail'}
-                title={' '}
                 component={ModificationEmail}
                 hideNavBar
             />
             <Scene
                 key={'modificationPassword'}
-                title={' '}
                 component={ModificationPassword}
                 hideNavBar
             />
             <Scene
                 key={'modificationDiet'}
-                title={' '}
                 component={ModificationDiet}
                 hideNavBar
             />
             <Scene
                 key={'modificationAllergies'}
-                title={' '}
                 component={ModificationAllergies}
                 hideNavBar
             />
@@ -83,10 +76,10 @@ export default class App extends Component {
                 tabs={true}
                 tabBarStyle={{ backgroundColor: '#FFFFFF' }}
                 initial={true}
+                showLabel = {false}
             >
             <Scene
                 key={'calendar'}
-                title={' '}
                 component={itsworks}
                 //initial={true}
                 iconName={'calendar'}
@@ -95,7 +88,6 @@ export default class App extends Component {
             />
             <Scene
                 key={'favorites'}
-                title={' '}
                 component={itsworks}
                 iconName={'heart'}
                 icon={TabIcon}
@@ -103,24 +95,21 @@ export default class App extends Component {
             />
             <Scene
                 key={'recipes'}
-                title={' '}
-                component={itsworks}
+                component={RecipesList}
                 iconName={'book'}
-                icon={TabIcon}
-                hideNavBar
-            />
-            <Scene
-                key={'shopping-list'}
-                title={' '}
-                component={ShoppingList}
-                iconName={'shopping-cart'}
                 icon={TabIcon}
                 hideNavBar
                 initial={true}
             />
             <Scene
+                key={'shopping-list'}
+                component={ShoppingList}
+                iconName={'shopping-cart'}
+                icon={TabIcon}
+                hideNavBar
+            />
+            <Scene
                 key={'profil'}
-                title={' '}
                 component={Profil}
                 iconName={'user'}
                 icon={TabIcon}

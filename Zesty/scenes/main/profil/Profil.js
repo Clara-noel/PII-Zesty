@@ -11,8 +11,9 @@ import { ButtonInput } from '../../../components/ButtonInput';
 export default class Profil extends Component {
     constructor(props) {
         super(props)
-        //this.iD = this.props.myId;
-        this.iD = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
+        //var Id = firebaseRef.auth().currentUser.uid
+        var Id = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
+        this.iD = Id;
         this.state = {
             email: '',
             firstname: '',
@@ -24,7 +25,24 @@ export default class Profil extends Component {
     }
 
     componentDidMount(){
-        this.renderUser()
+        const userRef = firebaseRef.database().ref().child("Users/" + this.iD + "/InformationsPersonnelles/")
+        userRef.once('value', (snapshot) => {
+            let user = snapshot.val();
+            if(user == null){
+                var myCurrentUser = firebaseRef.auth().currentUser
+                console.log(myCurrentUser.displayName)
+                var myUserRef = firebaseRef.database().ref().child("Users/" + this.iD);
+                myUserRef.update({
+                InformationsPersonnelles: {
+                    Prenom: myCurrentUser.displayName,
+                    Email:'Connecté via Facebook',
+                }
+                });
+                this.setState({firstname: myUserRef.Prenom});
+                this.setState({email: 'Connecté via Facebook'});
+            }
+            this.renderUser()
+        })
     }
     renderUser = () => {
         this.setState({allergies: ''});
@@ -72,10 +90,16 @@ export default class Profil extends Component {
         Actions.modificationName({oldName:this.state.firstname, myId:this.iD})
     }
     modificationEmail() {
+        if(this.state.email != 'Connecté via Facebook')
         Actions.modificationEmail({oldEmail:this.state.email, myId:this.iD})
+        else
+        alert('Vous ne pouvez modifier votre adresse email')
     }
     modificationPassword() {
+        if(this.state.email != 'Connecté via Facebook')
         Actions.modificationPassword({oldPassword:this.state.email, myId:this.iD})
+        else
+        alert('Vous ne pouvez modifier votre mot de passe')
     }
     modificationDiet() {
         Actions.modificationDiet({myId:this.iD})
