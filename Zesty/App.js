@@ -16,6 +16,9 @@ import ModificationDiet from './scenes/main/profil/ModificationDiet';
 import ModificationAllergies from './scenes/main/profil/ModificationAllergies';
 import ShoppingList from './scenes/main/ShoppingList';
 import RecipesList from './scenes/main/recipes/RecipesList';
+import Recipe from './scenes/main/recipes/Recipe';
+import FavoritesList from './scenes/main/recipes/FavoritesList';
+import Calendar from './scenes/main/Calendar';
 
 const TabIcon = ({ focused, iconName}) => {
     return (
@@ -72,6 +75,11 @@ export default class App extends Component {
                 hideNavBar
             />
             <Scene
+                key={'recipe'}
+                component={Recipe}
+                hideNavBar
+            />
+            <Scene
                 key="tabbar"
                 tabs={true}
                 tabBarStyle={{ backgroundColor: '#FFFFFF' }}
@@ -80,7 +88,7 @@ export default class App extends Component {
             >
             <Scene
                 key={'calendar'}
-                component={itsworks}
+                component={Calendar}
                 //initial={true}
                 iconName={'calendar'}
                 icon={TabIcon}
@@ -88,7 +96,7 @@ export default class App extends Component {
             />
             <Scene
                 key={'favorites'}
-                component={itsworks}
+                component={FavoritesList}
                 iconName={'heart'}
                 icon={TabIcon}
                 hideNavBar

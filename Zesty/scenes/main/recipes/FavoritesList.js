@@ -9,7 +9,7 @@ import DatePicker from 'react-native-datepicker'
 
 var data = []
 var fav = ''
-export default class RecipesList extends Component {
+export default class FavoritesList extends Component {
     constructor(props){
         super(props);
         var Id = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
@@ -26,13 +26,13 @@ export default class RecipesList extends Component {
         this.listFav = this.listFav.bind(this);
     }
     componentDidMount() {
+        this.listFav()
         var that = this
         firebaseRef.database().ref('Recipes/').on('child_added', function(data){
             var newData = [...that.state.listViewData]
             newData.push(data)
             that.setState({listViewData:newData})
         })
-        this.listFav()
     }
 
     listFav = () => {
@@ -59,20 +59,6 @@ export default class RecipesList extends Component {
             }
         })
     }
-    testFavorite = (theKey) => {
-        if(theKey === '-LAJ0-sNAvUUMQkik-hY')
-        {
-            this.setState({isFavorite: true})
-        }
-        else
-        {
-            console.log(theKey)
-            //this.setState({isFavorite: false})
-        }
-    }
-    displayRecipe(recipeKey) {
-        Actions.recipe({recipeId: recipeKey})
-    }
     render (){
         return (
             <Container style={style.container}>
@@ -83,13 +69,9 @@ export default class RecipesList extends Component {
                             dataSource={this.ds.cloneWithRows(this.state.listViewData)}
                             renderRow={data =>
                                 <ListItem style={style.listItemRecipe}>
-                                    <TouchableOpacity style={{flexDirection:'row', flexWrap:'wrap'}} onPress={() => this.displayRecipe(data.key)}>
+                                    <TouchableOpacity style={{flexDirection:'row', flexWrap:'wrap'}} onPress={() => alert(data.val().Image)}>
                                     <Image style={style.image} source={{uri:data.val().Image}}/>
-                                    {
-                                        this.state.isFavorite ?
-                                        <Icon name="md-heart" style={{color:'#D33C5B', fontSize:15, marginLeft:20}}/> :
-                                        <Icon name="md-heart-outline" style={{color:'#D33C5B', fontSize:15, marginLeft:20}}/>
-                                    }
+                                        <Icon name="md-heart" style={{color:'#D33C5B', fontSize:15, marginLeft:20}}/>
                                     <Text style={style.item}>{data.val().Title}</Text>
                                     </TouchableOpacity>
                                 </ListItem>
