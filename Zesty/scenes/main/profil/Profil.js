@@ -107,7 +107,13 @@ export default class Profil extends Component {
     modificationAllergies() {
         Actions.modificationAllergies({myId:this.iD})
     }
-
+    logOut() {
+        firebaseRef.auth().signOut().then(function() {
+            Actions.login()
+          }, function(error) {
+            // An error happened.
+          });
+    }
     render() {
         return (
             <View style={style.container}>
@@ -127,6 +133,7 @@ export default class Profil extends Component {
             <ButtonInput onPress={() => this.modificationDiet()}>{this.state.dietDesignation}</ButtonInput>
             <Text style={style.label}>Allergies</Text>
             <ButtonInput onPress={() => this.modificationAllergies()}>{this.state.allergiesDesignation}</ButtonInput>
+            <ButtonPink onPress={() => this.logOut()}></ButtonPink>
             </View>
     );
 }

@@ -30,20 +30,39 @@ export default class RecipesList extends Component {
                 this.setState({allergies: recipe.Allergies});
                 this.setState({diet: recipe.Regimes});
                 this.setState({imageUri: recipe.Image});
-
         })
     }
-    
-
-
+    back() {
+        Actions.pop()
+    }
+    renderDirections(recipeId){
+        console.log("hello" + recipeId)
+        firebaseRef.database().ref('Recipes/' + recipeId + '/Directions').on('child_added', function(data){
+            const recipeRef = firebaseRef.database().ref().child("Recipes/" + recipeId + "/Directions/" + data.key + "/")
+            recipeRef.once('value', (snapshot) => {
+            let recipe = snapshot.val();
+            console.log(recipe.Direction)
+        
+            })
+        return (
+            <Text>{"Hello "}</Text>
+        )
+        })
+    }
     render (){
         return (
             <View>
-            <MyHeader title={this.recipeId}></MyHeader>
+            <MyHeader title={this.state.title}></MyHeader>
+            <Button full warning onPress={this.back} style={{marginTop:-10}}>
+            <Text>Retour à la liste des recettes</Text>
+            </Button>
             <Image style={{height:200, width:300}} source={{uri:this.state.imageUri}}/>
             <Text>{this.state.title}</Text>
             <Text>{this.state.allergies}</Text>
             <Text>{this.state.diet}</Text>
+            {
+                this.renderDirections(this.recipeId)
+            }
             </View>
         )
     }

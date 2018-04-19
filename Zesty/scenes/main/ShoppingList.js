@@ -32,7 +32,6 @@ export default class ShoppingList extends Component {
         firebaseRef.database().ref('Users/' + this.iD + '/ShoppingList').child(key).set({Ingredient:data})
         newIngredient => this.setState({newIngredient: ''})
         this.setState({newIngredient:''})
-        console.log('la' + this.state.listViewData)
     }
 
     async deleteRow(secId, rowId, rowMap, data) {

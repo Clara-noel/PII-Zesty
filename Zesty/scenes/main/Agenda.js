@@ -1,15 +1,16 @@
 import React , { Component } from 'react';
 import { Text, View, StatusBar, ListView, RefreshControl, Image, TouchableOpacity } from 'react-native';
 import { Container, Content, Form, Input, Item, Button, Label, Icon, List, ListItem, Header } from 'native-base';
-import { firebaseRef } from '../../services/Firebase';
-import { MyHeader } from '../../components/MyHeader';
+import { firebaseRef } from './../../services/Firebase';
+import { MyHeader } from './../../components/MyHeader';
 import style from './styles';
 import { Actions } from 'react-native-router-flux';
-import { ButtonPink} from './../../components/Button';
+import DatePicker from 'react-native-datepicker';
 
 var data = [];
 
-export default class Calendar extends Component {
+
+export default class Agenda extends Component {
     constructor(props){
         super(props);
         var Id = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
@@ -18,9 +19,12 @@ export default class Calendar extends Component {
         this.ds =  new ListView.DataSource({rowHasChanged: (r1, r2) => 1 !== r2})
         this.state = {
             listViewData: data,
-            title: false,
+            newRecipe: '',
+            fav: '',
+            isFavorite : false,
             date: '',
         };
+
     }
     componentDidMount() {
         var that = this
@@ -34,26 +38,26 @@ export default class Calendar extends Component {
     displayRecipe(recipeKey) {
         Actions.recipe({recipeId: recipeKey})
     }
+    
+    addEvent(recipeKey, recipeName, date){
+        var usersRef = firebaseRef.database().ref().child("Users/" + this.iD + "/Event/" + recipeKey );
+        usersRef.update({
+            Title: recipeName,
+            Date: date,
+        });
+    }
     render (){
         return (
             <Container style={style.container}>
-                <MyHeader title={'AGENDA'}></MyHeader>
-                    <Content>
+                <MyHeader title="LES RECETTES"></MyHeader>
+                    <Content style={style.contentRecipe}>
                         <ListView
-                            pagingEnabled
-                            horizontal
                             enableEmptySections
                             dataSource={this.ds.cloneWithRows(this.state.listViewData)}
                             renderRow={data =>
-                                <ListItem>
-                                    <TouchableOpacity style={{width:320}} onPress={() => this.displayRecipe(data.key)}>
-                                    <Text>{data.val().Title}</Text>
-                                    <Text>{data.val().Date}</Text>
-                                    {
-                                        console.log("Calendar " + data.key)
-                                    }
+                                    <TouchableOpacity style={{flexDirection:'row', flexWrap:'wrap'}} onPress={() => this.displayRecipe(data.key)}>
+                                    <Text style={style.item}>{data.val().Title}</Text>
                                     </TouchableOpacity>
-                                </ListItem>
                             }
                         />
                     </Content>

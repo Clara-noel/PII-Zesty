@@ -7,9 +7,9 @@ import style from './../styles';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker'
 
-var data = []
-var fav = ''
-export default class FavoritesList extends Component {
+var data = [];
+
+export default class RecipesList extends Component {
     constructor(props){
         super(props);
         var Id = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
@@ -18,46 +18,41 @@ export default class FavoritesList extends Component {
         this.ds =  new ListView.DataSource({rowHasChanged: (r1, r2) => 1 !== r2})
         this.state = {
             listViewData: data,
-            newRecipe: '',
-            fav: '',
-            isFavorite : false,
             date: '',
         };
-        this.listFav = this.listFav.bind(this);
+
+        this.deleteFav = this.deleteFav.bind(this);
     }
     componentDidMount() {
-        this.listFav()
-        var that = this
-        firebaseRef.database().ref('Recipes/').on('child_added', function(data){
-            var newData = [...that.state.listViewData]
-            newData.push(data)
-            that.setState({listViewData:newData})
-        })
-    }
 
-    listFav = () => {
         var that = this
         var myFav = ''
         firebaseRef.database().ref('Users/' + this.iD + '/Favorites/').on("child_added", function(snapshot) {
-            var newFav = snapshot.val();
-            myFav = myFav + snapshot.key + ";"
-            that.setState({fav: myFav})
+            myFav = myFav + snapshot.key
         })
-    }
-
-    addFav = (data) => {
-        var myKey = data.key
-        const userRef = firebaseRef.database().ref().child("Users/" + this.iD + "/Favorites/" + myKey)
-        userRef.once('value', (snapshot) => {
-            let user = snapshot.val();
-            if(user !== null){
-                firebaseRef.database().ref('Users/' + this.iD + '/Favorites/' + myKey).set(null)
-                }
-            else {
-                firebaseRef.database().ref('Users/' + this.iD + '/Favorites').push().myKey
-                firebaseRef.database().ref('Users/' + this.iD + '/Favorites/').child(myKey).update({Recipe:data.val().Title})
+        firebaseRef.database().ref('Recipes/').on('child_added', function(data){
+            var position = myFav.search(data.key)
+            if(position != -1){
+                var newData = [...that.state.listViewData]
+                newData.push(data)
+                that.setState({listViewData:newData})
             }
         })
+
+    }
+
+    deleteFav = (secId, rowId, rowMap, data) => {
+        var myKey = data.key
+        firebaseRef.database().ref('Users/' + this.iD + '/Favorites/' + myKey).set(null)
+
+        rowMap[`${secId}${rowId}`].props.closeRow();
+        var newData = [...this.state.listViewData];
+        newData.splice(rowId, 1) 
+        this.setState({listViewData:newData});
+        }
+
+    displayRecipe(recipeKey) {
+        Actions.recipe({recipeId: recipeKey})
     }
     render (){
         return (
@@ -69,15 +64,15 @@ export default class FavoritesList extends Component {
                             dataSource={this.ds.cloneWithRows(this.state.listViewData)}
                             renderRow={data =>
                                 <ListItem style={style.listItemRecipe}>
-                                    <TouchableOpacity style={{flexDirection:'row', flexWrap:'wrap'}} onPress={() => alert(data.val().Image)}>
+                                    <TouchableOpacity style={{flexDirection:'row', flexWrap:'wrap'}} onPress={() => this.displayRecipe(data.key)}>
                                     <Image style={style.image} source={{uri:data.val().Image}}/>
-                                        <Icon name="md-heart" style={{color:'#D33C5B', fontSize:15, marginLeft:20}}/>
+                                    <Icon name="md-heart" style={{color:'#D33C5B', fontSize:15, marginLeft:20}}/>
                                     <Text style={style.item}>{data.val().Title}</Text>
                                     </TouchableOpacity>
                                 </ListItem>
                             }
                             renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                                <Button full light onPress={() => this.addFav(data)}>
+                                <Button full light onPress={() => this.deleteFav(secId, rowId, rowMap, data)}>
                                     <Icon name="md-heart" style={{color:'#D33C5B', fontSize:35}}/>
                                 </Button>
                             }

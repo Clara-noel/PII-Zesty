@@ -28,7 +28,7 @@ export default class Login extends Component {
     _login() {
         firebaseRef.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
             var Id = firebaseRef.auth().currentUser.uid
-            Actions.profil()
+            Actions.recipes()
         }).catch(function(error){
             alert('L’adresse et/ou le mot de passe sont erronés')
         })
@@ -43,7 +43,7 @@ export default class Login extends Component {
             const credential = firebase.auth.FacebookAuthProvider.credential(token)
             firebaseRef.auth().signInWithCredential(credential).then(() => {
                 var Id = firebaseRef.auth().currentUser.uid
-                Actions.profil({myId:Id})
+                Actions.recipes()
             }).catch((error) => {
                 console.log(error)
             })

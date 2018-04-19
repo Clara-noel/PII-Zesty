@@ -19,6 +19,7 @@ import RecipesList from './scenes/main/recipes/RecipesList';
 import Recipe from './scenes/main/recipes/Recipe';
 import FavoritesList from './scenes/main/recipes/FavoritesList';
 import Calendar from './scenes/main/Calendar';
+import Agenda from './scenes/main/Agenda';
 
 const TabIcon = ({ focused, iconName}) => {
     return (
@@ -36,7 +37,7 @@ export default class App extends Component {
             <Scene
                 key={'login'}
                 component={Login}
-                initial={true}
+                //initial={true}
                 hideNavBar
             />
             <Scene
@@ -78,18 +79,18 @@ export default class App extends Component {
                 key={'recipe'}
                 component={Recipe}
                 hideNavBar
+                tabs={true}
             />
             <Scene
                 key="tabbar"
                 tabs={true}
                 tabBarStyle={{ backgroundColor: '#FFFFFF' }}
-                initial={true}
                 showLabel = {false}
+                initial={true}
             >
             <Scene
                 key={'calendar'}
                 component={Calendar}
-                //initial={true}
                 iconName={'calendar'}
                 icon={TabIcon}
                 hideNavBar

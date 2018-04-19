@@ -5,10 +5,11 @@ import { firebaseRef } from '../../../services/Firebase';
 import { MyHeader } from '../../../components/MyHeader';
 import style from './../styles';
 import { Actions } from 'react-native-router-flux';
-import DatePicker from 'react-native-datepicker'
+import DatePicker from 'react-native-datepicker';
 
-var data = []
-var fav = ''
+var data = [];
+var fav = '';
+
 export default class RecipesList extends Component {
     constructor(props){
         super(props);
@@ -24,6 +25,7 @@ export default class RecipesList extends Component {
             date: '',
         };
         this.listFav = this.listFav.bind(this);
+        this.addFav = this.addFav.bind(this);
     }
     componentDidMount() {
         var that = this
@@ -46,12 +48,16 @@ export default class RecipesList extends Component {
     }
 
     addFav = (data) => {
+        const {
+            fav = ''
+        } = this.state;
         var myKey = data.key
         const userRef = firebaseRef.database().ref().child("Users/" + this.iD + "/Favorites/" + myKey)
         userRef.once('value', (snapshot) => {
-            let user = snapshot.val();
-            if(user !== null){
+            let myFav = snapshot.val();
+            if(myFav !== null){
                 firebaseRef.database().ref('Users/' + this.iD + '/Favorites/' + myKey).set(null)
+                    this.listFav()
                 }
             else {
                 firebaseRef.database().ref('Users/' + this.iD + '/Favorites').push().myKey
@@ -59,19 +65,38 @@ export default class RecipesList extends Component {
             }
         })
     }
-    testFavorite = (theKey) => {
-        if(theKey === '-LAJ0-sNAvUUMQkik-hY')
-        {
-            this.setState({isFavorite: true})
-        }
-        else
-        {
-            console.log(theKey)
-            //this.setState({isFavorite: false})
+    renderIcon (theKey){
+        const {
+            isFavorite = false
+        } = this.state;
+
+            var str = this.state.fav
+            var position = str.search(theKey)
+            if(position != -1 )
+            {
+                () => this.setState({ isFavorite: true });
+                return (
+                    <Icon name="md-heart" style={{color:'#D33C5B', fontSize:15, marginLeft:20}}/>
+                )
+            }
+            else
+            {
+                () => this.setState({ isFavorite: false })
+                return (
+                    <Icon name="md-heart-outline" style={{color:'#D33C5B', fontSize:15, marginLeft:20}}/>
+                    )
         }
     }
     displayRecipe(recipeKey) {
         Actions.recipe({recipeId: recipeKey})
+    }
+    
+    addEvent(recipeKey, recipeName, date){
+        var usersRef = firebaseRef.database().ref().child("Users/" + this.iD + "/Event/" + recipeKey );
+        usersRef.update({
+            Title: recipeName,
+            Date: date,
+        });
     }
     render (){
         return (
@@ -86,9 +111,7 @@ export default class RecipesList extends Component {
                                     <TouchableOpacity style={{flexDirection:'row', flexWrap:'wrap'}} onPress={() => this.displayRecipe(data.key)}>
                                     <Image style={style.image} source={{uri:data.val().Image}}/>
                                     {
-                                        this.state.isFavorite ?
-                                        <Icon name="md-heart" style={{color:'#D33C5B', fontSize:15, marginLeft:20}}/> :
-                                        <Icon name="md-heart-outline" style={{color:'#D33C5B', fontSize:15, marginLeft:20}}/>
+                                        this.renderIcon(data.key)
                                     }
                                     <Text style={style.item}>{data.val().Title}</Text>
                                     </TouchableOpacity>
@@ -100,14 +123,14 @@ export default class RecipesList extends Component {
                                 </Button>
                             }
                             renderLeftHiddenRow={(data, secId, rowId, rowMap) =>
-                                <Button full warning onPress={() => this.addEvent()}>
+                                <Button full warning onPress={() => this.addEvent(data.key, data.val().Title)}>
                                     <DatePicker
                                         style={{width: 200}}
                                         date={this.state.date}
-                                        mode="datetime"
-                                        format="DD-MM-YYYY"
-                                        minDate="2016-05-01"
-                                        maxDate="2016-06-01"
+                                        mode="date"
+                                        format="YYYY-MM-DD"
+                                        minDate={new Date()}
+                                        maxDate="2020-06-01"
                                         customStyles={{
                                         dateIcon: {
                                             position: 'absolute',
@@ -118,8 +141,10 @@ export default class RecipesList extends Component {
                                         }}
                                         confirmBtnText= 'Valider'
                                         cancelBtnText= 'Annuler'
+                                        onPress = {this.addEvent}
+                                        disabled={false}
                                         style={{borderColor:'red', marginLeft:300, width:3}}
-                                        onDateChange={(date) => {this.setState({date: date})}}
+                                        onDateChange={(date) => {this.addEvent(data.key, data.val().Title, date)}}
                                     />
                                 </Button>
                             }
