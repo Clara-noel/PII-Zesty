@@ -1,3 +1,4 @@
+// Page d'inscription 1/2
 import React, { Component } from 'react';
 import { firebaseRef } from '../../services/Firebase'
 import { Text, View, ImageBackground, Animated, Keyboard, StatusBar} from 'react-native';
@@ -5,7 +6,6 @@ import _ from 'lodash';
 import { Input } from '../../components/Input';
 import { ButtonPink, ButtonBack } from '../../components/Button';
 import { Actions } from 'react-native-router-flux';
-import itsworks from './itsworks';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL} from '../authentication/styles';
 import logo from '../../ressources/Logo.png';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -27,6 +27,7 @@ export default class Subscribe extends Component {
         this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
     }
 
+// Récupère et formate les données saisies sur la page pour les renvoyer à la seconde page d'inscription
     _subscribe() {
         if(this.state.firstname != '')
         {
@@ -37,6 +38,7 @@ export default class Subscribe extends Component {
             allergies = allergies + 'A2;';
             if(this.state.peanuts)
             allergies = allergies + 'A3;';
+            // Affichage page suivante par Actions et envoit des données
             Actions.subscribeFinal({diet:'P' + this.state.diet + ';', firstname:this.state.firstname, allergies:allergies})
         }
         else
@@ -44,44 +46,45 @@ export default class Subscribe extends Component {
             alert('Le prénom est obligatoire ! ')
         }
     }
+// Retour en arrière => Actions.pop() est une fonction de base de router-flux
     _back() {
         Actions.pop();
     }
-    checked = (title) => {
-        this.setState({title:!this.state.title});
-    }
-    componentWillMount () {
-        this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
-        this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
-    }
-    componentWillUnmount() {
-        this.keyboardWillShowSub.remove();
-        this.keyboardWillHideSub.remove();
-    }
-    keyboardWillShow = (event) => {
-        Animated.parallel([
-        Animated.timing(this.keyboardHeight, {
-            duration: event.duration,
-            toValue: event.endCoordinates.height,
-        }),
-        Animated.timing(this.imageHeight, {
-            duration: event.duration,
-            toValue: IMAGE_HEIGHT_SMALL,
-        }),
-        ]).start();
-    };
-    keyboardWillHide = (event) => {
-        Animated.parallel([
-        Animated.timing(this.keyboardHeight, {
-            duration: event.duration,
-            toValue: 0,
-        }),
-        Animated.timing(this.imageHeight, {
-            duration: event.duration,
-            toValue: IMAGE_HEIGHT,
-        }),
-        ]).start();
-    };
+
+//// Fonctions qui permettent d'améliorer l'utilisabilité de l'application => réduit le logo et remonte les inputs pour faire apparaitre tous les boutons
+            componentWillMount () {
+                this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
+                this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
+            }
+            componentWillUnmount() {
+                this.keyboardWillShowSub.remove();
+                this.keyboardWillHideSub.remove();
+            }
+            keyboardWillShow = (event) => {
+                Animated.parallel([
+                Animated.timing(this.keyboardHeight, {
+                    duration: event.duration,
+                    toValue: event.endCoordinates.height,
+                }),
+                Animated.timing(this.imageHeight, {
+                    duration: event.duration,
+                    toValue: IMAGE_HEIGHT_SMALL,
+                }),
+                ]).start();
+            };
+            keyboardWillHide = (event) => {
+                Animated.parallel([
+                Animated.timing(this.keyboardHeight, {
+                    duration: event.duration,
+                    toValue: 0,
+                }),
+                Animated.timing(this.imageHeight, {
+                    duration: event.duration,
+                    toValue: IMAGE_HEIGHT,
+                }),
+                ]).start();
+            };
+/// 
     render() {
         return (
             <ImageBackground source={require('../../ressources/backgroundImage.png')} style={styles.backgroundImage}>

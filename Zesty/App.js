@@ -1,10 +1,9 @@
+// Définit l'architecture de l'application, point d'entrée lors du run
 import React, { Component } from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
-import itsworks from '../Zesty/scenes/authentication/itsworks';
 import Login from '../Zesty/scenes/authentication/Login';
 import Subscribe from '../Zesty/scenes/authentication/Subscribe';
 import SubscribeFinal from '../Zesty/scenes/authentication/SubscribeFinal';
@@ -19,7 +18,6 @@ import RecipesList from './scenes/main/recipes/RecipesList';
 import Recipe from './scenes/main/recipes/Recipe';
 import FavoritesList from './scenes/main/recipes/FavoritesList';
 import Calendar from './scenes/main/Calendar';
-import Agenda from './scenes/main/Agenda';
 
 const TabIcon = ({ focused, iconName}) => {
     return (
@@ -37,7 +35,7 @@ export default class App extends Component {
             <Scene
                 key={'login'}
                 component={Login}
-                //initial={true}
+                initial={true}
                 hideNavBar
             />
             <Scene
@@ -81,12 +79,12 @@ export default class App extends Component {
                 hideNavBar
                 tabs={true}
             />
+            {/* Les scènes contenues dans la balise ci-dessous sont celles qui figurent dans la barre de navigation */}
             <Scene
                 key="tabbar"
                 tabs={true}
                 tabBarStyle={{ backgroundColor: '#FFFFFF' }}
                 showLabel = {false}
-                initial={true}
             >
             <Scene
                 key={'calendar'}

@@ -1,3 +1,4 @@
+// Modification du mot de passe
 import React, { Component } from 'react';
 import { firebaseRef } from '../../../services/Firebase';
 import { View, StatusBar} from 'react-native';
@@ -19,6 +20,8 @@ export default class ModificationPassword extends Component {
     _back() {
         Actions.pop()
     }
+
+// updatePassword est une fonction propre à Firebase qui s'occupe de vérifier la validité du nouveau mdp et d'update les users
     _registerPassword = () => {
         var user = firebaseRef.auth().currentUser;
         user.updatePassword(this.state.password).then( () => { Actions.profil({myId:this.iD}); }

@@ -1,3 +1,4 @@
+// Modification du nom de l'utilisateur
 import React, { Component } from 'react';
 import { firebaseRef } from '../../../services/Firebase';
 import { View, StatusBar} from 'react-native';
@@ -20,6 +21,8 @@ export default class ModificationName extends Component {
     _back() {
         Actions.pop()
     }
+
+// Modification dans la BDD
     register = () => {
         var user = firebaseRef.database().ref().child("Users/" + this.iD + "/InformationsPersonnelles/");
         user.update({Prenom:this.state.firstname});

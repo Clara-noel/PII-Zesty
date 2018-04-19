@@ -1,3 +1,4 @@
+// Modification des allergies
 import React, { Component } from 'react';
 import { firebaseRef } from '../../../services/Firebase';
 import { View, StatusBar, Text} from 'react-native';
@@ -21,6 +22,7 @@ export default class ModificationAllergies extends Component {
     _back() {
         Actions.pop()
     }
+// Modification dans la BDD
     register = () => {
         var allergies = '';
         if(this.state.lactose)

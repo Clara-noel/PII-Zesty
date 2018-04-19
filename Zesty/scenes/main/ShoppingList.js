@@ -1,3 +1,4 @@
+// Page de Liste de course modifiable
 import React , { Component } from 'react';
 import { Text, View, StatusBar, ListView, RefreshControl } from 'react-native';
 import { Container, Content, Form, Input, Item, Button, Label, Icon, List, ListItem, Header } from 'native-base';
@@ -10,8 +11,7 @@ var data = []
 export default class ShoppingList extends Component {
     constructor(props){
         super(props);
-        var Id = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
-        //var Id = firebaseRef.auth().currentUser.uid
+        var Id = firebaseRef.auth().currentUser.uid
         this.ds =  new ListView.DataSource({rowHasChanged: (r1, r2) => 1 !== r2})
         this.iD = Id;
         this.state = {
@@ -19,6 +19,7 @@ export default class ShoppingList extends Component {
             newIngredient: "",
         }
     }
+// S'exécute au moins une fois et met à jour listViewData grâce à la fonctionnalités child_added de Firebase
     componentDidMount() {
         var that = this
         firebaseRef.database().ref('Users/' + this.iD + '/ShoppingList').on('child_added', function(data){
@@ -27,6 +28,8 @@ export default class ShoppingList extends Component {
             that.setState({listViewData:newData})
         })
     }
+
+// Ajoute un nouvel élément à la BDD dans la liste de course (l'affichage est mis à jour grâce à child_added)
     addRow(data) {
         var key = firebaseRef.database().ref('Users/' + this.iD + '/ShoppingList').push().key
         firebaseRef.database().ref('Users/' + this.iD + '/ShoppingList').child(key).set({Ingredient:data})
@@ -34,6 +37,7 @@ export default class ShoppingList extends Component {
         this.setState({newIngredient:''})
     }
 
+// Supprime un élément de la liste et la row affichée correspondante 
     async deleteRow(secId, rowId, rowMap, data) {
         await firebaseRef.database().ref('Users/' + this.iD + '/ShoppingList/' + data.key).set(null)
 

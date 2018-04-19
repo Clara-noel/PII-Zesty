@@ -1,3 +1,4 @@
+// Page inachevée : Page d'affichage des repas/évenements programmés
 import React , { Component } from 'react';
 import { Text, View, StatusBar, ListView, RefreshControl, Image, TouchableOpacity } from 'react-native';
 import { Container, Content, Form, Input, Item, Button, Label, Icon, List, ListItem, Header } from 'native-base';
@@ -12,8 +13,7 @@ var data = [];
 export default class Calendar extends Component {
     constructor(props){
         super(props);
-        var Id = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
-        //var Id = firebaseRef.auth().currentUser.uid
+        var Id = firebaseRef.auth().currentUser.uid
         this.iD = Id;
         this.ds =  new ListView.DataSource({rowHasChanged: (r1, r2) => 1 !== r2})
         this.state = {
@@ -22,18 +22,20 @@ export default class Calendar extends Component {
             date: '',
         };
     }
+// S'exécute au moins une fois et met à jour listViewData grâce à la fonctionnalités child_added de Firebase
     componentDidMount() {
         var that = this
-        firebaseRef.database().ref("Users/" + this.iD + "/Event/").on('child_added', function(data){
+        firebaseRef.database().ref("Users/" + this.iD + "/Event/").orderByChild("Date").on('child_added', function(data){
             var newData = [...that.state.listViewData]
             newData.push(data)
             that.setState({listViewData:newData})
         })
     }
-
+// Affiche la recette programmée
     displayRecipe(recipeKey) {
         Actions.recipe({recipeId: recipeKey})
     }
+
     render (){
         return (
             <Container style={style.container}>
@@ -46,13 +48,12 @@ export default class Calendar extends Component {
                             dataSource={this.ds.cloneWithRows(this.state.listViewData)}
                             renderRow={data =>
                                 <ListItem>
-                                    <TouchableOpacity style={{width:320}} onPress={() => this.displayRecipe(data.key)}>
-                                    <Text>{data.val().Title}</Text>
-                                    <Text>{data.val().Date}</Text>
-                                    {
-                                        console.log("Calendar " + data.key)
-                                    }
+                                <View>
+                                    <Text style={style.dateEvent}>{data.val().Date}</Text>
+                                    <TouchableOpacity style={style.buttonEvent} onPress={() => this.displayRecipe(data.key)}>
+                                    <Text style={style.textEvent}>{data.val().Title}</Text>
                                     </TouchableOpacity>
+                                </View>
                                 </ListItem>
                             }
                         />

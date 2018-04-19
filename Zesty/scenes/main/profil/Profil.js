@@ -1,3 +1,4 @@
+// Affiche le profil de l'utilisateur 
 import React, { Component } from 'react';
 import { firebaseRef } from '../../../services/Firebase';
 import { Text, View, StatusBar} from 'react-native';
@@ -11,8 +12,7 @@ import { ButtonInput } from '../../../components/ButtonInput';
 export default class Profil extends Component {
     constructor(props) {
         super(props)
-        //var Id = firebaseRef.auth().currentUser.uid
-        var Id = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
+        var Id = firebaseRef.auth().currentUser.uid
         this.iD = Id;
         this.state = {
             email: '',
@@ -24,10 +24,12 @@ export default class Profil extends Component {
         }
     }
 
+// S'exécute obligatoirement une fois au début et récupère les infos persos de l'utilisateur courant dans la BDD
     componentDidMount(){
         const userRef = firebaseRef.database().ref().child("Users/" + this.iD + "/InformationsPersonnelles/")
         userRef.once('value', (snapshot) => {
             let user = snapshot.val();
+    // Gestion des exceptions pour les utilisateurs créés via Facebook qui ne passent pas par le formulaire d'inscription
             if(user == null){
                 var myCurrentUser = firebaseRef.auth().currentUser
                 console.log(myCurrentUser.displayName)
@@ -41,9 +43,11 @@ export default class Profil extends Component {
                 this.setState({firstname: myUserRef.Prenom});
                 this.setState({email: 'Connecté via Facebook'});
             }
+    // Une fois les exceptions gérées, appel de renderUser
             this.renderUser()
         })
     }
+// Initialise les variables nécessaires par appel à la BDD et appel de getDesignation via sectionPref (pour afficher un libellé d'allergies et de régimes correct)
     renderUser = () => {
         this.setState({allergies: ''});
         this.setState({diet: ''});
@@ -64,6 +68,7 @@ export default class Profil extends Component {
             else { this.setState({dietDesignation: 'Non communiqué'}) }
         })
     }
+// Les allergies et régimes sont stockés sous la forme A1;A2 ou P6 par exemple => ici on découpe la chaine stockée poru récupérer les intitulés un par un
     sectionPref = (preferences, prefDesignation) => {
         var str = preferences
         var i = 0;
@@ -74,6 +79,8 @@ export default class Profil extends Component {
             i =i +3;
         }
     }
+
+// Récupère les intitulés et les concatène dans une chaine de caractères pour les afficher dans le input
     getDesignation= (str, prefDesignation) => {
         const preferencesRef = firebaseRef.database().ref().child(prefDesignation + "/" + str)
         preferencesRef.once('value', (snapshot) => {
@@ -86,27 +93,32 @@ export default class Profil extends Component {
             }
         })
     }
-    modificationName() {
-        Actions.modificationName({oldName:this.state.firstname, myId:this.iD})
-    }
-    modificationEmail() {
-        if(this.state.email != 'Connecté via Facebook')
-        Actions.modificationEmail({oldEmail:this.state.email, myId:this.iD})
-        else
-        alert('Vous ne pouvez modifier votre adresse email')
-    }
-    modificationPassword() {
-        if(this.state.email != 'Connecté via Facebook')
-        Actions.modificationPassword({oldPassword:this.state.email, myId:this.iD})
-        else
-        alert('Vous ne pouvez modifier votre mot de passe')
-    }
-    modificationDiet() {
-        Actions.modificationDiet({myId:this.iD})
-    }
-    modificationAllergies() {
-        Actions.modificationAllergies({myId:this.iD})
-    }
+
+//// Fonctions de renvoit vers les formulaires de modifications de données, avec interdiction sur mdp et email pour les utilisateurs Facebook
+            modificationName() {
+                Actions.modificationName({oldName:this.state.firstname, myId:this.iD})
+            }
+            modificationEmail() {
+                if(this.state.email != 'Connecté via Facebook')
+                Actions.modificationEmail({oldEmail:this.state.email, myId:this.iD})
+                else
+                alert('Vous ne pouvez modifier votre adresse email')
+            }
+            modificationPassword() {
+                if(this.state.email != 'Connecté via Facebook')
+                Actions.modificationPassword({oldPassword:this.state.email, myId:this.iD})
+                else
+                alert('Vous ne pouvez modifier votre mot de passe')
+            }
+            modificationDiet() {
+                Actions.modificationDiet({myId:this.iD})
+            }
+            modificationAllergies() {
+                Actions.modificationAllergies({myId:this.iD})
+            }
+///
+
+// Déconnexion et renvoit vers la page Login
     logOut() {
         firebaseRef.auth().signOut().then(function() {
             Actions.login()
@@ -133,7 +145,7 @@ export default class Profil extends Component {
             <ButtonInput onPress={() => this.modificationDiet()}>{this.state.dietDesignation}</ButtonInput>
             <Text style={style.label}>Allergies</Text>
             <ButtonInput onPress={() => this.modificationAllergies()}>{this.state.allergiesDesignation}</ButtonInput>
-            <ButtonPink onPress={() => this.logOut()}></ButtonPink>
+            <ButtonPink onPress={() => this.logOut()}> Déconnexion</ButtonPink>
             </View>
     );
 }

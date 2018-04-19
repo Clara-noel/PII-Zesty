@@ -1,3 +1,5 @@
+// Page de style de la partie authentication de l'appli
+
 import { StyleSheet, Dimensions } from 'react-native';
 const window = Dimensions.get('window');
 

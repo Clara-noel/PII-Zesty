@@ -20,6 +20,7 @@ export default class ModificationEmail extends Component {
     _back() {
         Actions.pop()
     }
+// updateEmail est une fonction propre à Firebase qui s'occupe de vérifier la validité du nouvel email et d'update les users
     _registerUser = () => {
         var user = firebaseRef.auth().currentUser;
         user.updateEmail(this.state.email).then( () => { this._registerDB() }
@@ -27,6 +28,7 @@ export default class ModificationEmail extends Component {
             alert("Le format du mail est mauvais")
         });
     }
+// MAJ du mail dans la BDD
     _registerDB() {
         var myemail = firebaseRef.database().ref().child("Users/" + this.iD + "/InformationsPersonnelles/");
         myemail.update({Email:this.state.email});

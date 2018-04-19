@@ -1,3 +1,4 @@
+// Configuration à la BDD Firebase, rappelée sous toutes les pages où c'est nécessaire par l'emploi de firebaseRef
 import * as firebase from 'firebase'
 
 

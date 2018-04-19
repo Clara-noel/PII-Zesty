@@ -1,3 +1,4 @@
+// Page de connexion et page d'accueil
 import React, { Component } from 'react';
 import { firebaseRef } from '../../services/Firebase'
 import firebase from 'firebase';
@@ -6,7 +7,6 @@ import _ from 'lodash';
 import { Input } from '../../components/Input';
 import { ButtonPink, ButtonWhite, ButtonBlue } from '../../components/Button';
 import { Actions } from 'react-native-router-flux';
-import itsworks from './itsworks';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL} from '../authentication/styles';
 import logo from '../../ressources/Logo.png';
 
@@ -24,7 +24,7 @@ export default class Login extends Component {
         this.keyboardHeight = new Animated.Value(0);
         this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
     }
-
+    // Appelle la fonctionnalité de connnexion avec email et mdp propre à Firebase et renvoit à la page principale si succès
     _login() {
         firebaseRef.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
             var Id = firebaseRef.auth().currentUser.uid
@@ -33,9 +33,13 @@ export default class Login extends Component {
             alert('L’adresse et/ou le mot de passe sont erronés')
         })
     }
+
+    // Renvoit au formulaire d'inscription
     _register() {
     Actions.subscribe();
     }
+
+    // Appelle la fonctionnalité de connnexion avec Facebook proposée par Firebase et renvoit à la page principale si succès
     async loginWithFacebook() {
         const {type, token} = await Expo.Facebook.logInWithReadPermissionsAsync('2188292048109750', {permissions: ['public_profile']})
 
@@ -49,38 +53,41 @@ export default class Login extends Component {
             })
         }
     }
-    componentWillMount () {
-        this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
-        this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
-    }
-    componentWillUnmount() {
-        this.keyboardWillShowSub.remove();
-        this.keyboardWillHideSub.remove();
-    }
-    keyboardWillShow = (event) => {
-        Animated.parallel([
-        Animated.timing(this.keyboardHeight, {
-            duration: event.duration,
-            toValue: event.endCoordinates.height,
-        }),
-        Animated.timing(this.imageHeight, {
-            duration: event.duration,
-            toValue: IMAGE_HEIGHT_SMALL,
-        }),
-        ]).start();
-    };
-    keyboardWillHide = (event) => {
-        Animated.parallel([
-        Animated.timing(this.keyboardHeight, {
-            duration: event.duration,
-            toValue: 0,
-        }),
-        Animated.timing(this.imageHeight, {
-            duration: event.duration,
-            toValue: IMAGE_HEIGHT,
-        }),
-        ]).start();
-    };
+//// Fonctions qui permettent d'améliorer l'utilisabilité de l'application => réduit le logo et remonte les inputs pour faire apparaitre tous les boutons
+            componentWillMount () {
+                this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
+                this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
+            }
+            componentWillUnmount() {
+                this.keyboardWillShowSub.remove();
+                this.keyboardWillHideSub.remove();
+            }
+            keyboardWillShow = (event) => {
+                Animated.parallel([
+                Animated.timing(this.keyboardHeight, {
+                    duration: event.duration,
+                    toValue: event.endCoordinates.height,
+                }),
+                Animated.timing(this.imageHeight, {
+                    duration: event.duration,
+                    toValue: IMAGE_HEIGHT_SMALL,
+                }),
+                ]).start();
+            };
+            keyboardWillHide = (event) => {
+                Animated.parallel([
+                Animated.timing(this.keyboardHeight, {
+                    duration: event.duration,
+                    toValue: 0,
+                }),
+                Animated.timing(this.imageHeight, {
+                    duration: event.duration,
+                    toValue: IMAGE_HEIGHT,
+                }),
+                ]).start();
+            };
+/////
+
     render() {
         return (
             <ImageBackground source={require('../../ressources/backgroundImage.png')} style={styles.backgroundImage}>

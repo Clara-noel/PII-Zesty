@@ -1,3 +1,4 @@
+// Page de style du Main
 import { StyleSheet, Dimensions } from 'react-native';
 
 export default StyleSheet.create({
@@ -6,7 +7,6 @@ container: {
     margin:10,
 },
 titre: {
-    marginTop:10,
     padding: 2,
     paddingBottom: 0,
     color: '#D33C5B',
@@ -72,7 +72,6 @@ item: {
     color: '#252D42',
     marginLeft:10,
     marginRight:50,
-    //marginTop:20,
 },
 listItemRecipe: {
     borderWidth:1,
@@ -89,6 +88,28 @@ image:{
     height: 80,
     margin:-10,
 
+},
+buttonEvent: {
+    width: 320,
+    backgroundColor:'rgba(37, 45, 66, 0.5)',
+    borderRadius: 4,
+    justifyContent: 'center',
+    marginTop:20,
+    height: 200,
+},
+dateEvent: {
+        marginTop:6,
+        color: '#252D42',
+        fontSize:25,
+        fontWeight: '700',
+        textAlign: 'center'
+},
+textEvent: {
+    marginTop:6,
+    color: '#eee',
+    fontSize:25,
+    fontWeight: '700',
+    textAlign: 'center'
 }
 });
 

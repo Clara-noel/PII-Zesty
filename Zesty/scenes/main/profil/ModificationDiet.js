@@ -1,3 +1,4 @@
+// Modification du régime
 import React, { Component } from 'react';
 import { firebaseRef } from '../../../services/Firebase';
 import { View, StatusBar, Text} from 'react-native';
@@ -16,6 +17,8 @@ export default class ModificationDiet extends Component {
     _back() {
         Actions.pop()
     }
+
+// Modification dans la BDD
     register = () => {
         var user = firebaseRef.database().ref().child("Users/" + this.iD + "/InformationsPersonnelles/");
         user.update({Regime:'P' + this.state.diet});

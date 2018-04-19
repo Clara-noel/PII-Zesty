@@ -1,3 +1,4 @@
+// Page d'affichage de toutes les recettes 
 import React , { Component } from 'react';
 import { Text, View, StatusBar, ListView, RefreshControl, Image, TouchableOpacity } from 'react-native';
 import { Container, Content, Form, Input, Item, Button, Label, Icon, List, ListItem, Header } from 'native-base';
@@ -13,8 +14,8 @@ var fav = '';
 export default class RecipesList extends Component {
     constructor(props){
         super(props);
-        var Id = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
-        //var Id = firebaseRef.auth().currentUser.uid
+        //var Id = 'BG3iEABEF0OMi2gYYgptpIV35KA3';
+        var Id = firebaseRef.auth().currentUser.uid
         this.iD = Id;
         this.ds =  new ListView.DataSource({rowHasChanged: (r1, r2) => 1 !== r2})
         this.state = {
@@ -27,6 +28,7 @@ export default class RecipesList extends Component {
         this.listFav = this.listFav.bind(this);
         this.addFav = this.addFav.bind(this);
     }
+// S'exécute au moins une fois et met à jour listViewData grâce à la fonctionnalités child_added de Firebase
     componentDidMount() {
         var that = this
         firebaseRef.database().ref('Recipes/').on('child_added', function(data){
@@ -37,6 +39,7 @@ export default class RecipesList extends Component {
         this.listFav()
     }
 
+// Appelé dans le componentDidMount donc exécuté au moins une fois elle met a jour dynamiquement la liste des favoris
     listFav = () => {
         var that = this
         var myFav = ''
@@ -47,6 +50,7 @@ export default class RecipesList extends Component {
         })
     }
 
+// Si la recette est déja en favori, la supprime de la BDD, sinon l'ajoute
     addFav = (data) => {
         const {
             fav = ''
@@ -61,16 +65,20 @@ export default class RecipesList extends Component {
                 }
             else {
                 firebaseRef.database().ref('Users/' + this.iD + '/Favorites').push().myKey
-                firebaseRef.database().ref('Users/' + this.iD + '/Favorites/').child(myKey).update({Recipe:data.val().Title})
+                firebaseRef.database().ref('Users/' + this.iD + '/Favorites/').child(myKey).update({Title:data.val().Title,Image:data.val().Image })
             }
         })
+        // Met à jour les scènes (si maj de favoris seulement => bug) pour affichage de l'onglet Favoris cohérent
+        Actions.refresh({ })
     }
+// Affichage conditionnel de l'icône coeur/favori en plein ou en vide suivant si la recette est dans la liste des favoris ou non
     renderIcon (theKey){
         const {
             isFavorite = false
         } = this.state;
 
             var str = this.state.fav
+        // Récupère la liste des id des recettes favorites et regarde si l'iD vérifié est dans la chaine de caractère => renvoit -1 s'il n'y est pas, la position sinon
             var position = str.search(theKey)
             if(position != -1 )
             {
@@ -87,10 +95,12 @@ export default class RecipesList extends Component {
                     )
         }
     }
+// Affiche la recette sélectionnée
     displayRecipe(recipeKey) {
         Actions.recipe({recipeId: recipeKey})
     }
-    
+
+// Ajoute un event/repas programmé dans la BDD
     addEvent(recipeKey, recipeName, date){
         var usersRef = firebaseRef.database().ref().child("Users/" + this.iD + "/Event/" + recipeKey );
         usersRef.update({

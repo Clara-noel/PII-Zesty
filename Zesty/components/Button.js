@@ -32,6 +32,14 @@ const ButtonBack = ({ onPress, children}) => {
     )
 }
 
+const ButtonOrange = ({ onPress, children}) => {
+    return (
+        <TouchableOpacity onPress={onPress} style={styles.ButtonOrange}>
+        <Text style={styles.orange}>{children}</Text>
+        </TouchableOpacity>
+    )
+}
+
 const styles = StyleSheet.create({
     ButtonPink: {
         marginTop: 25,
@@ -81,8 +89,21 @@ const styles = StyleSheet.create({
         color: '#3B5998',
         fontSize:14,
         textDecorationLine: 'underline',
-        
     },
+    ButtonOrange: {
+        marginTop: -15,
+        height:25,
+        padding:12,
+        width: '100%',
+        alignItems: 'center',
+        backgroundColor:'#f39c12',
+    },
+    orange: {
+        marginTop:-6,
+        color: '#eee',
+        fontWeight: '700',
+        fontSize:12,
+        },
 });
 
-export { ButtonPink, ButtonWhite, ButtonBlue, ButtonBack };
+export { ButtonPink, ButtonWhite, ButtonBlue, ButtonBack, ButtonOrange };
